@@ -1,2 +1,2 @@
 # security-tests
-Security Best Practices Test for OSGi Framework Implementations
+Security Best Practices Tests for OSGi Framework Implementations
