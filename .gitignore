@@ -1,0 +1,11 @@
+/.metadata/
+.DS_Store
+.*.swp
+/.gradle/
+/*/bin/
+/*/bin_test/
+/*/generated/
+.DS_Store
+Thumbs.db
+.metadata/
+scrapbook.jpage
