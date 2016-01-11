@@ -1,0 +1,118 @@
+bled
+[  4135.670] (II) intel(0): RandR 1.2 enabled, ignore the following RandR disabled message.
+[  4135.671] (==) intel(0): DPMS enabled
+[  4135.671] (==) intel(0): display hotplug detection enabled
+[  4135.671] (II) intel(0): [DRI2] Setup complete
+[  4135.671] (II) intel(0): [DRI2]   DRI driver: i965
+[  4135.671] (II) intel(0): [DRI2]   VDPAU driver: i965
+[  4135.671] (II) intel(0): direct rendering: DRI2 enabled
+[  4135.671] (II) intel(0): hardware support for Present enabled
+[  4135.671] (--) RandR disabled
+[  4135.680] (II) SELinux: Disabled on system
+[  4135.685] (II) AIGLX: enabled GLX_MESA_copy_sub_buffer
+[  4135.685] (II) AIGLX: enabled GLX_ARB_create_context
+[  4135.685] (II) AIGLX: enabled GLX_ARB_create_context_profile
+[  4135.685] (II) AIGLX: enabled GLX_EXT_create_context_es2_profile
+[  4135.685] (II) AIGLX: enabled GLX_INTEL_swap_event
+[  4135.685] (II) AIGLX: enabled GLX_SGI_swap_control and GLX_MESA_swap_control
+[  4135.685] (II) AIGLX: enabled GLX_EXT_framebuffer_sRGB
+[  4135.685] (II) AIGLX: enabled GLX_ARB_fbconfig_float
+[  4135.685] (II) AIGLX: GLX_EXT_texture_from_pixmap backed by buffer objects
+[  4135.685] (II) AIGLX: enabled GLX_ARB_create_context_robustness
+[  4135.685] (II) AIGLX: Loaded and initialized i965
+[  4135.685] (II) GLX: Initialized DRI2 GL provider for screen 0
+[  4135.687] (II) intel(0): switch to mode 1280x1024@60.0 on VGA1 using pipe 0, position (0, 0), rotation normal, reflection none
+[  4138.076] (II) intel(0): Setting screen physical size to 338 x 270
+[  4138.122] (II) config/udev: Adding input device Power Button (/dev/input/event3)
+[  4138.122] (**) Power Button: Applying InputClass "evdev keyboard catchall"
+[  4138.122] (II) LoadModule: "evdev"
+[  4138.122] (II) Loading /usr/lib/xorg/modules/input/evdev_drv.so
+[  4138.123] (II) Module evdev: vendor="X.Org Foundation"
+[  4138.123] 	compiled for 1.16.0, module version = 2.9.0
+[  4138.123] 	Module class: X.Org XInput Driver
+[  4138.123] 	ABI class: X.Org XInput driver, version 21.0
+[  4138.123] (II) Using input driver 'evdev' for 'Power Button'
+[  4138.123] (**) Power Button: always reports core events
+[  4138.123] (**) evdev: Power Button: Device: "/dev/input/event3"
+[  4138.123] (--) evdev: Power Button: Vendor 0 Product 0x1
+[  4138.123] (--) evdev: Power Button: Found keys
+[  4138.123] (II) evdev: Power Button: Configuring as keyboard
+[  4138.123] (**) Option "config_info" "udev:/sys/devices/LNXSYSTM:00/LNXPWRBN:00/input/input5/event3"
+[  4138.123] (II) XINPUT: Adding extended input device "Power Button" (type: KEYBOARD, id 6)
+[  4138.123] (**) Option "xkb_rules" "evdev"
+[  4138.123] (**) Option "xkb_model" "pc105"
+[  4138.123] (**) Option "xkb_layout" "fr"
+[  4138.123] (**) Option "xkb_variant" "latin9"
+[  4138.150] (II) config/udev: Adding input device Power Button (/dev/input/event2)
+[  4138.150] (**) Power Button: Applying InputClass "evdev keyboard catchall"
+[  4138.150] (II) Using input driver 'evdev' for 'Power Button'
+[  4138.150] (**) Power Button: always reports core events
+[  4138.150] (**) evdev: Power Button: Device: "/dev/input/event2"
+[  4138.150] (--) evdev: Power Button: Vendor 0 Product 0x1
+[  4138.150] (--) evdev: Power Button: Found keys
+[  4138.150] (II) evdev: Power Button: Configuring as keyboard
+[  4138.150] (**) Option "config_info" "udev:/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0C:00/input/input4/event2"
+[  4138.150] (II) XINPUT: Adding extended input device "Power Button" (type: KEYBOARD, id 7)
+[  4138.150] (**) Option "xkb_rules" "evdev"
+[  4138.150] (**) Option "xkb_model" "pc105"
+[  4138.150] (**) Option "xkb_layout" "fr"
+[  4138.150] (**) Option "xkb_variant" "latin9"
+[  4138.150] (II) config/udev: Adding drm device (/dev/dri/card0)
+[  4138.150] (II) xfree86: Adding drm device (/dev/dri/card0)
+[  4138.150] (EE) /dev/dri/card0: failed to set DRM interface version 1.4: Permission denied
+[  4138.151] (II) config/udev: Adding input device Dell Premium USB Optical Mouse (/dev/input/event0)
+[  4138.151] (**) Dell Premium USB Optical Mouse: Applying InputClass "evdev pointer catchall"
+[  4138.151] (II) Using input driver 'evdev' for 'Dell Premium USB Optical Mouse'
+[  4138.151] (**) Dell Premium USB Optical Mouse: always reports core events
+[  4138.151] (**) evdev: Dell Premium USB Optical Mouse: Device: "/dev/input/event0"
+[  4138.204] (--) evdev: Dell Premium USB Optical Mouse: Vendor 0x413c Product 0x3016
+[  4138.204] (--) evdev: Dell Premium USB Optical Mouse: Found 14 mouse buttons
+[  4138.204] (--) evdev: Dell Premium USB Optical Mouse: Found scroll wheel(s)
+[  4138.204] (--) evdev: Dell Premium USB Optical Mouse: Found relative axes
+[  4138.204] (--) evdev: Dell Premium USB Optical Mouse: Found x and y relative axes
+[  4138.204] (II) evdev: Dell Premium USB Optical Mouse: Configuring as mouse
+[  4138.204] (II) evdev: Dell Premium USB Optical Mouse: Adding scrollwheel support
+[  4138.204] (**) evdev: Dell Premium USB Optical Mouse: YAxisMapping: buttons 4 and 5
+[  4138.204] (**) evdev: Dell Premium USB Optical Mouse: EmulateWheelButton: 4, EmulateWheelInertia: 10, EmulateWheelTimeout: 200
+[  4138.204] (**) Option "config_info" "udev:/sys/devices/pci0000:00/0000:00:1a.0/usb1/1-1/1-1.3/1-1.3:1.0/0003:413C:3016.0001/input/input2/event0"
+[  4138.204] (II) XINPUT: Adding extended input device "Dell Premium USB Optical Mouse" (type: MOUSE, id 8)
+[  4138.204] (II) evdev: Dell Premium USB Optical Mouse: initialized for relative axes.
+[  4138.204] (**) Dell Premium USB Optical Mouse: (accel) keeping acceleration scheme 1
+[  4138.204] (**) Dell Premium USB Optical Mouse: (accel) acceleration profile 0
+[  4138.204] (**) Dell Premium USB Optical Mouse: (accel) acceleration factor: 2.000
+[  4138.204] (**) Dell Premium USB Optical Mouse: (accel) acceleration threshold: 4
+[  4138.204] (II) config/udev: Adding input device Dell Premium USB Optical Mouse (/dev/input/mouse0)
+[  4138.204] (II) No input driver specified, ignoring this device.
+[  4138.204] (II) This device may have been added with another device file.
+[  4138.205] (II) config/udev: Adding input device Dell Dell USB Keyboard (/dev/input/event1)
+[  4138.205] (**) Dell Dell USB Keyboard: Applying InputClass "evdev keyboard catchall"
+[  4138.205] (II) Using input driver 'evdev' for 'Dell Dell USB Keyboard'
+[  4138.205] (**) Dell Dell USB Keyboard: always reports core events
+[  4138.205] (**) evdev: Dell Dell USB Keyboard: Device: "/dev/input/event1"
+[  4138.205] (--) evdev: Dell Dell USB Keyboard: Vendor 0x413c Product 0x2105
+[  4138.205] (--) evdev: Dell Dell USB Keyboard: Found keys
+[  4138.205] (II) evdev: Dell Dell USB Keyboard: Configuring as keyboard
+[  4138.205] (**) Option "config_info" "udev:/sys/devices/pci0000:00/0000:00:1a.0/usb1/1-1/1-1.4/1-1.4:1.0/0003:413C:2105.0002/input/input3/event1"
+[  4138.205] (II) XINPUT: Adding extended input device "Dell Dell USB Keyboard" (type: KEYBOARD, id 9)
+[  4138.205] (**) Option "xkb_rules" "evdev"
+[  4138.205] (**) Option "xkb_model" "pc105"
+[  4138.205] (**) Option "xkb_layout" "fr"
+[  4138.205] (**) Option "xkb_variant" "latin9"
+[  4138.205] (II) config/udev: Adding input device HDA Intel PCH Front Headphone (/dev/input/event8)
+[  4138.206] (II) No input driver specified, ignoring this device.
+[  4138.206] (II) This device may have been added with another device file.
+[  4138.206] (II) config/udev: Adding input device HDA Intel PCH HDMI/DP,pcm=3 (/dev/input/event9)
+[  4138.206] (II) No input driver specified, ignoring this device.
+[  4138.206] (II) This device may have been added with another device file.
+[  4138.206] (II) config/udev: Adding input device HDA Intel PCH Front Mic (/dev/input/event4)
+[  4138.206] (II) No input driver specified, ignoring this device.
+[  4138.206] (II) This device may have been added with another device file.
+[  4138.206] (II) config/udev: Adding input device HDA Intel PCH Rear Mic (/dev/input/event5)
+[  4138.206] (II) No input driver specified, ignoring this device.
+[  4138.206] (II) This device may have been added with another device file.
+[  4138.206] (II) config/udev: Adding input device HDA Intel PCH Line (/dev/input/event6)
+[  4138.206] (II) No input driver specified, ignoring this device.
+[  4138.206] (II) This device may have been added with another device file.
+[  4138.207] (II) config/udev: Adding input device HDA Intel PCH Line Out (/dev/input/event7)
+[  4138.207] (II) No input driver specified, ignoring this device.
+[  4138.207] (II) This device may have been added with another device file.
