@@ -1,15 +1,8 @@
-/* Contenu de l'archive */
+/* Archive content */ 
    --------------------
 
   |-- CHANGES.txt
   |-- README.txt
-  |-- tests
-  |   |-- bundles
-  |   |   |-- com.sogetiht.otb.sysatt100.jar
-  |   |   |-- ..
-  |   |   |-- org.osgi.core-1.4.0.jar
-  |   |   `-- server
-  |   |       `-- Server.class
   |-- doc
   |   `-- README.pdf
   |-- install
@@ -18,18 +11,26 @@
   |   `-- windows
   |       |-- installFelix.bat
   |       `-- tools
-  `-- run
-      |-- OSGi
-          |-- com.sogetiht.otb.properties.cfg
-          |-- linux
-          |   |-- cleanDirectories.sh
-          |   |-- runAutomatedTests.sh
-          |   |-- runBundleWithFelix.sh
-          | 
-          `-- windows
+  |-- run
+  |   |-- OSGi
+  |       |-- com.sogetiht.otb.properties.cfg
+  |       |-- linux
+  |       |   |-- cleanDirectories.sh
+  |       |   |-- runAutomatedTests.sh
+  |       |   |-- runBundleWithFelix.sh
+  |       |   |-- runServer.sh
+  |       |   `-- setServerIP.sh
+  |       | 
+  |       `-- windows
+  `-- tests
+      `-- bundles
+          |-- com.sogetiht.otb.sysatt100.jar
+          |-- ..
+          |-- org.osgi.core-1.4.0.jar
+          `-- server
+              `-- Server.class
 
 */ Documentation */
    -------------
 
-    Merci de vous référer au document README.pdf contenu
-  dans le dossier *doc*.  
+    Thanks to refer to the README.pdf document located in the *doc* directory.  
