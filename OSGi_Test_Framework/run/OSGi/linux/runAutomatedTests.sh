@@ -25,10 +25,26 @@
 reset
 
 VERBOSE=false
-# mode verbose activé ?
-if [ "$1" == "-v" ]; then
-    VERBOSE=true
-fi
+
+BUNDLE_MODE=false
+bundleArray=()    
+
+for param in "$@"
+do
+    # mode verbose activé ?
+    if [ $param == "-v" ]; then
+	VERBOSE=true
+
+    # ajout du bundle ?
+    elif [ $BUNDLE_MODE == true ]; then
+	bundleArray+=($param)	
+	
+    # mode bundle activé ?
+    elif [ $param == "-b" ]; then
+	BUNDLE_MODE=true
+    fi
+
+done
 
 # Permet de se placer dans le répertoire "RD_OTB/trunk/test".
 # Cela permet d'exécuter le script depuis n'importe quel répertoire.
@@ -348,18 +364,30 @@ START_TIME=`date +%s`
 
 echo -e " Test Execution:\n"
 # Si option -b activée
-# 
-for bundlePath in $BUNDLES/com.sogetiht.otb.sysatt*.jar
-do
-    bundle=`basename $bundlePath`
-    bundle=${bundle:23:3}
 
-    if [ ${#bundlePath} -ne 1 ] && [ "$bundle" != "$PREVIOUS" ]; then
+if [ $BUNDLE_MODE == false ]; then
+    for bundlePath in $BUNDLES/com.sogetiht.otb.sysatt*.jar
+    do
+	bundle=`basename $bundlePath`
+        bundle=${bundle:23:3}	
+
+	if [ ${#bundlePath} -ne 1 ]; then
+
+		bundleArray+=($bundle)	
+	fi
+    done
+fi
+
+
+
+for bundle in "${bundleArray[@]}"
+do
+    if [ "$bundle" != "$PREVIOUS" ]; then
 
         # La commande ci-dessous permet d'exclure des tests parmi tous les bundles existants jusqu'au présent
         # liste de tous les bundles
         #[[ $bundle =~ ^010|025|050|055|060|080|085|090|100|110|115|120|135|136|137|138|139|140|145|146|150|155|156|160|161|162|163|164|165|170|171|172|173|174|175|176|177|178|179|185|186|187|190|195|199|200|201|202|203|205|206|207|208|210|218|220|221|225|226|230|235|240|245|250|260|261|265|275|290|300|301|302|303|304$ ]] && continue
-	[[ $bundle =~ ^221$ ]] && continue #fait planter l'ordi
+	#[[ $bundle =~ ^221$ ]] && continue #fait planter l'ordi
 
         # Exécution des nouveaux bundles (implémentés par Diana)
         #[[ $bundle =~ ^010|025|050|055|060|080|085|090|100|110|115|120|135|136|137|138|139|140|145|146|150|155|156|160|161|162|163|164|170|171|172|173|174|175|177|190|195|199|200|201|202|203|205|206|210|220|221|230|235|240|250|260|261|265|275|290$ ]] && continue
@@ -559,42 +587,42 @@ do
 	    esac
 	    
 	    echo -n -e "   RUNNING"
-        # Exécution du test
-            runTest $bundle
-            if [ $bundle -eq 190 ]; then
+	# Exécution du test
+	    runTest $bundle
+	    if [ $bundle -eq 190 ]; then
 		runTest $bundle
-            fi
+	    fi
 	    
-            PREVIOUS=$bundle
-            list[i]=$bundle
-            i=$((i+1))
-            if [ $ABORTED -eq 0 ]; then
+	    PREVIOUS=$bundle
+	    list[i]=$bundle
+	    i=$((i+1))
+	    if [ $ABORTED -eq 0 ]; then
 		echo -n -e "\r   FINISHED\n\n"
-            else
+	    else
 		echo -n -e "\r   FINISHED (killed)  \n\n"
 		ABORTED=0
-            fi
+	    fi
 	    
 	else
 	    
 	    echo -n -e "  SYS-ATT-$bundle ................................ RUNNING"
-        # Exécution du test
-            runTest $bundle
-            if [ $bundle -eq 190 ]; then
+	# Exécution du test
+	    runTest $bundle
+	    if [ $bundle -eq 190 ]; then
 		runTest $bundle
-            fi
+	    fi
 	    
-            PREVIOUS=$bundle
-            list[i]=$bundle
-            i=$((i+1))
-            if [ $ABORTED -eq 0 ]; then
+	    PREVIOUS=$bundle
+	    list[i]=$bundle
+	    i=$((i+1))
+	    if [ $ABORTED -eq 0 ]; then
 		echo -n -e "\r  SYS-ATT-$bundle ................................ FINISHED\n"
-            else
+	    else
 		echo -n -e "\r  SYS-ATT-$bundle ................................ FINISHED (killed)  \n"
 		ABORTED=0
-            fi
+	    fi
 	fi
-    fi
+    fi  
 done
 
 # Nombre de répertoires dans .openthebox créés par le bundle 201
@@ -1068,10 +1096,10 @@ if [ ! -d logs ]; then
 fi
 
 cd logs
-LOG_TEMP=all_`date +%d-%m-%Y_%H:%M`
+LOG_TEMP=test_`date +%d-%m-%Y_%H:%M:%S`
 mkdir $LOG_TEMP
 cd $ROOT
-mv $OUTPUT/* $LOG_TEMP
+mv $OUTPUT/* logs/$LOG_TEMP
 
 echo -e "\n"
 echo -e "------------------------------------------------------"
