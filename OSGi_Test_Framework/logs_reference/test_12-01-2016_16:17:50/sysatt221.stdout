@@ -1,0 +1,13 @@
+ERROR: Bundle com.sogetiht.otb.sysatt221.com.sogetiht.otb.sysatt221 [1] Error starting file:/home/otbusr/RD_OTB2/test/run/OSGi/linux/../../../tests/bundles/com.sogetiht.otb.sysatt221.jar (org.osgi.framework.BundleException: Activator start error in bundle com.sogetiht.otb.sysatt221.com.sogetiht.otb.sysatt221 [1].)
+java.lang.OutOfMemoryError: unable to create new native thread
+	at java.lang.Thread.start0(Native Method)
+	at java.lang.Thread.start(Thread.java:714)
+	at com.sogetiht.otb.sysatt221.Activator.main(Activator.java:88)
+	at com.sogetiht.otb.sysatt221.Activator.start(Activator.java:40)
+	at org.apache.felix.framework.util.SecureAction.startActivator(SecureAction.java:645)
+	at org.apache.felix.framework.Felix.activateBundle(Felix.java:2146)
+	at org.apache.felix.framework.Felix.startBundle(Felix.java:2064)
+	at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1291)
+	at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:304)
+	at java.lang.Thread.run(Thread.java:745)
+/home/otbusr/RD_OTB2/test/run/OSGi/linux/runBundleWithFelix.sh : ligne 147 : 16327 Killed                  java -Dorg.osgi.framework.storage.clean=onFirstInit -Dfelix.auto.deploy.action= -Dorg.osgi.framework.startlevel.beginning=4 -Dfelix.auto.start.1=file:$BUNDLES/com.sogetiht.otb.util.jar -Dfelix.auto.start.4="$OPTIONS" -jar $ROOT/felix/bin/felix.jar

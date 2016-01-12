@@ -1,0 +1,8 @@
+ERROR: Bundle com.sogetiht.otb.sysatt245.com.sogetiht.otb.sysatt245 [1] Error starting file:/home/otbusr/RD_OTB2/test/run/OSGi/linux/../../../tests/bundles/com.sogetiht.otb.sysatt245.jar (org.osgi.framework.BundleException: Unresolved constraint in bundle com.sogetiht.otb.sysatt245.com.sogetiht.otb.sysatt245 [1]: Unable to resolve 1.0: missing requirement [1.0] osgi.wiring.package; (&(osgi.wiring.package=com.sogetiht.otb.services.test)(version>=0.10.0)(!(version>=1.0.0))))
+org.osgi.framework.BundleException: Unresolved constraint in bundle com.sogetiht.otb.sysatt245.com.sogetiht.otb.sysatt245 [1]: Unable to resolve 1.0: missing requirement [1.0] osgi.wiring.package; (&(osgi.wiring.package=com.sogetiht.otb.services.test)(version>=0.10.0)(!(version>=1.0.0)))
+	at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:3974)
+	at org.apache.felix.framework.Felix.startBundle(Felix.java:2037)
+	at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1291)
+	at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:304)
+	at java.lang.Thread.run(Thread.java:745)
+/home/otbusr/RD_OTB2/test/run/OSGi/linux/runBundleWithFelix.sh : ligne 147 : 11112 Killed                  java -Dorg.osgi.framework.storage.clean=onFirstInit -Dfelix.auto.deploy.action= -Dorg.osgi.framework.startlevel.beginning=4 -Dfelix.auto.start.1=file:$BUNDLES/com.sogetiht.otb.util.jar -Dfelix.auto.start.4="$OPTIONS" -jar $ROOT/felix/bin/felix.jar

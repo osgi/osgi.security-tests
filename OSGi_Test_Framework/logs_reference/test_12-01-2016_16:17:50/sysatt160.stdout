@@ -1,0 +1,16 @@
+Auto-properties install: file:/home/otbusr/RD_OTB2/test/run/OSGi/linux/../../../tests/bundles/com.sogetiht.otb.sysatt160.jar (org.osgi.framework.BundleException: Could not create bundle object. - java.lang.Exception: Manifst error: Duplicate attribute name - Bundle-Malicious)
+org.osgi.framework.BundleException: Could not create bundle object.
+	at org.apache.felix.framework.Felix.installBundle(Felix.java:2952)
+	at org.apache.felix.framework.BundleContextImpl.installBundle(BundleContextImpl.java:165)
+	at org.apache.felix.main.AutoProcessor.processAutoProperties(AutoProcessor.java:296)
+	at org.apache.felix.main.AutoProcessor.process(AutoProcessor.java:79)
+	at org.apache.felix.main.Main.main(Main.java:292)
+Caused by: java.lang.Exception: Manifst error: Duplicate attribute name - Bundle-Malicious
+	at org.apache.felix.framework.cache.JarRevision.getMainAttributes(JarRevision.java:302)
+	at org.apache.felix.framework.cache.JarRevision.getManifestHeader(JarRevision.java:104)
+	at org.apache.felix.framework.BundleImpl.createRevision(BundleImpl.java:1196)
+	at org.apache.felix.framework.BundleImpl.<init>(BundleImpl.java:96)
+	at org.apache.felix.framework.Felix.installBundle(Felix.java:2899)
+	... 4 more
+Auto-properties start: file:/home/otbusr/RD_OTB2/test/run/OSGi/linux/../../../tests/bundles/com.sogetiht.otb.sysatt160.jar (org.osgi.framework.BundleException: Could not create bundle object. - java.lang.Exception: Manifst error: Duplicate attribute name - Bundle-Malicious)
+/home/otbusr/RD_OTB2/test/run/OSGi/linux/runBundleWithFelix.sh : ligne 147 : 17634 Killed                  java -Dorg.osgi.framework.storage.clean=onFirstInit -Dfelix.auto.deploy.action= -Dorg.osgi.framework.startlevel.beginning=4 -Dfelix.auto.start.1=file:$BUNDLES/com.sogetiht.otb.util.jar -Dfelix.auto.start.4="$OPTIONS" -jar $ROOT/felix/bin/felix.jar

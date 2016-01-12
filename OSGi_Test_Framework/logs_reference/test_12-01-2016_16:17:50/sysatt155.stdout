@@ -1,0 +1,2 @@
+Auto-properties install: file:/home/otbusr/RD_OTB2/test/run/OSGi/linux/../../../tests/bundles/com.sogetiht.otb.sysatt155.jar (org.osgi.framework.BundleException: Bundle symbolic name and version are not unique: com.sogetiht.otb.sysatt155.com.sogetiht.otb.sysatt155:0.10.0)
+Auto-properties start: file:/home/otbusr/RD_OTB2/test/run/OSGi/linux/../../../tests/bundles/com.sogetiht.otb.sysatt155.jar (org.osgi.framework.BundleException: Bundle symbolic name and version are not unique: com.sogetiht.otb.sysatt155.com.sogetiht.otb.sysatt155:0.10.0)

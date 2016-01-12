@@ -1,0 +1,15 @@
+ERROR: Bundle com.sogetiht.otb.sysatt199.com.sogetiht.otb.sysatt199 [1] Error starting file:/home/otbusr/RD_OTB2/test/run/OSGi/linux/../../../tests/bundles/com.sogetiht.otb.sysatt199.jar (org.osgi.framework.BundleException: Activator start error in bundle com.sogetiht.otb.sysatt199.com.sogetiht.otb.sysatt199 [1].)
+java.lang.OutOfMemoryError: Requested array size exceeds VM limit
+	at com.sogetiht.otb.sysatt199.Activator.<init>(Activator.java:15)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:526)
+	at java.lang.Class.newInstance(Class.java:383)
+	at org.apache.felix.framework.Felix.createBundleActivator(Felix.java:4336)
+	at org.apache.felix.framework.Felix.activateBundle(Felix.java:2141)
+	at org.apache.felix.framework.Felix.startBundle(Felix.java:2064)
+	at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1291)
+	at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:304)
+	at java.lang.Thread.run(Thread.java:745)
+/home/otbusr/RD_OTB2/test/run/OSGi/linux/runBundleWithFelix.sh : ligne 147 :  8701 Killed                  java -Dorg.osgi.framework.storage.clean=onFirstInit -Dfelix.auto.deploy.action= -Dorg.osgi.framework.startlevel.beginning=4 -Dfelix.auto.start.1=file:$BUNDLES/com.sogetiht.otb.util.jar -Dfelix.auto.start.4="$OPTIONS" -jar $ROOT/felix/bin/felix.jar
