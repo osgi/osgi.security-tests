@@ -406,191 +406,179 @@ do
 	if [ "$VERBOSE" == "true" ]; then
 	    echo -e "  SYS-ATT-$bundle"
 	    case $bundle in
-		010)
-		    echo  "Construction et sending of packets : PING(TCP), TCP and UDP"
-		    ;;
-		025)
-		    echo  "Ce bundle identifie les ports en service par active discovery, en balayant l'ensemble d'un sous-réseau local."
-		    ;;
-		060)
-		    echo  "Ce bundle ouvre tous les ports de la machine."
-		    ;;
-		080)
-		    echo  "Cette attaque consiste à modifier le fichier .etc.hosts de la plateforme de manière à usurper l'identité d'entités critiques (PFG)."
-		    ;;
 		100)
-		    echo  "Envoi à un serveur distant de l'ensemble des propriétés système, des propriétés de la JVM et le détail des bundles et registres installés."
+		    echo  "Sending of different data to a distant server: system properties, JVM properties, bundle details and installed registers."
 		    ;;
 		110)
-		    echo  "Envoi à un serveur distant des fichiers de log système."
+		    echo  "Sending of system log files to a distant server."
 		    ;;
 		115)
-		    echo  "Envoi à un serveur distant des fichiers linux passwd et shadow."
+		    echo  "Sending of passwd and shadow linux files to a distant server."
 		    ;;
 		120)
-		    echo  "Parcours de l'arborescence fichier et renvoie à un serveur distant de fichiers."
+		    echo  "Tree diagram route from distant server, looking for pertinent files, data drop via the network."
 		    ;;
 		135)
-		    echo  "Exécution de code natif avec l'utilisation de JNA(Java Native Access)."
+		    echo  "Native code execution with JNA (Java Native Access)."
 		    ;;
 		136)
-		    echo  "Exécution de code natif avec l'utilisation de JNI(Java Native Interface)."
+		    echo  "Native code execution with JNI(Java Native Interface)."
 		    ;;
 		138)
-		    echo  "Utilisation de la méthode stop(à du bundle 0."
+		    echo  "Framework stop by call of bundle stop() method."
 		    ;;
 		139)
-		    echo  "Utilisation de la méthode java.lang.Runtime.getRuntime().halt(0)."
+		    echo  "Framework stop by use of java.lang.Runtime.getRuntime().halt(0) or java.lang.System.exit(0)."
 		    ;;
 		140)
-		    echo  "Création de liens symboliques pointant sur des repertoires ou fichiers sensibles (racine, binaire et librairies)."
+		    echo  "Creation of symbolic links pointing on critical files or folders (root, binaries, libraries)."
 		    ;;
 		145)
-		    echo  "Manipulation de fichiers de configuration système."
+		    echo  "System configuration file manipulation."
 		    ;;
 		146)
-		    echo  "Manipulation de fichiers de configuration système en redirigeant la sortie system.out.println dans un fichier."
+		    echo  "System configuration file manipulation by redirecting system.out.println output in a file."
 		    ;;
 		150)
-		    echo  "Envoie sur un serveur distant des données relatives à l'exécution des bundles sur la plateforme en s'abonnat à tous les services."
+		    echo  "Data hijacking by event use (FrameworkEvent, BundleEvent, ServiceEvent) : event subscription, authorized values and typing dictionnaries hijacking."
 		    ;;
 		155)
-		    echo  "Envoi sur un serveur distant de tous les bundles installées sur le framework."
+		    echo  "Platform installed bundles drop (with BundleContext.bundles or BundleContext.getBundles)."
 		    ;;
 		160)
-		    echo  "Header invalide dans le fichier MANIFEST.MF."
+		    echo  "MANIFEST.MF file with invalid header."
 		    ;;
 		162)
-		    echo  "Valeur inappropriée dans le fichier MANIFEST.MF."
+		    echo  "MANIFEST.MF file inappropriate value, violationg OSGi Spec. Version number associated to bundle is not in a X.X.X form (with X integer)."
 		    ;;
 		164)
-		    echo  "Epuisement des ressources par import excessif de bibliothèques natives."
+		    echo  "Resources exhaustion by native libraries excessive import."
 		    ;;
 		165)
-		    echo  "Empêcher l'exécution d'un bundle par usurpation de son SymbolicName et Version."
+		    echo  "Avoid bundle execution by spoofing SymbolicName/Version couple."
 		    ;;
 		170)
-		    echo  "Envoi depuis un serveur distant de bundles malicieux."
+		    echo  "Bundle injection in the framework."
 		    ;;
 		171)
-		    echo  "N bundles souscrivent à des services dépendant eux-mêmes de services sous-jacents, de façon récursive. Si A,B, ... N-1, N sont des bundles, ceux-ci souscrivent respectivement aux services b (du bundle B), c, ... n."
+		    echo  "Generation of several bundles which process, in a successive and interlinked maner, the subscription of services which depend themselves of underlying services, in a recursive maner."
 		    ;;
 		172)
-		    echo  "L'exécution de ce bundle provoque l'épuisement des ressources lors de la phase de décompression du fichier JAR (création d'un bundle aux dimension disproportionnées)."
+		    echo  "Malicious bundle creation as a small sized JAR file, but whose decompression by decompression tools such as Jar Tool provokes the creation of a huge bundle in terms on size."
 		    ;;
 		173)
-		    echo  "Ce bundle monopolise inutilement les ressources systèmes par des calculs à l'horizon inatteignable."
+		    echo  "Resources exhaustion by infinite complex calculations (key research in a exhaustive maner, non homogeneous systems resolution, infinite loop with object creation at each loop)."
 		    ;;
 		174)
-		    echo  "Déclaration d'un nombre important de services."
+		    echo  "Declaration of an important number of services."
 		    ;;
 		175)
-		    echo  "Ces deux bundles monopolisent des ressources par la souscription mutuelle de services entre eux."
+		    echo  "Resource exhaustion by mutually dependant service subscriptions."
 		    ;;
 		176)
-		    echo  "Provocation de l'erreur StackOverflow dans un bundle tiers par souscritpion de services mutuellement dépendant. Le service du bundle tiers appelle le service malicieux quin au lieu de s'exécuter normalement, appelle le service du bundle tiers."
+		    echo  "StackOverFlowError exception provocation in a third party bundle by mutually dependant service subscriptions."
 		    ;;
 		177)
-		    echo  "Le bundle souscrit à un service qu'il fournit lui-même. Un changement d'état produit un nouveau changement d'état, et ainsi de suiten dans un schéma de boucle infinie."
+		    echo  "Resources exhaustion by service self subscription. A state change of this service produces a new state change, and  so on, as an infinite loop plan."
 		    ;;
 		178)
-		    echo  "blocage de l'exécution du framework par une boucle infinie dans le Bundle-Activator (méthode start)."
+		    echo  "Block framework execution with an infinite loop in the Bundle Activator (bundle start() or stop() methods)."
 		    ;;
 		179)
-		    echo  "Blocage de l'exécution du framework par un \"Thread-Hanging\" dans le Bundle-Activator (méthode start)."
+		    echo  "Block framework execution with a Thread hanging in the Bundle Activator (bundle start() or stop() methods)."
 		    ;;
 		185)
-		    echo  "Epuisement des ressources par implémentation d'une boucle infinie dans un thread."
+		    echo  "Resources exhaustion by infinite loop implementation in a thread."
 		    ;;
 		186)
-		    echo  "Epuisement des ressources par implémentation d'une boucle infinie dans une méthode du bundle (méthode start du Bundle-Activator)."
+		    echo  "Resources exhaustion by infinite loop implementation in a method of the bundle."
 		    ;;
 		187)
-		    echo  "Epuisement des ressources par lancement d'un nombre important de bundle sur le framework."
+		    echo  "Resources exhaustion by launching of an important number of bundles on the framework."
 		    ;;
 		190)
-		    echo  "Ce bundle crée des fichiers encombrants sur le système (=Zombie data)."
+		    echo  "Creation of bulky temporary files in neutral public area (and common for all bundles of the framework) which is never cleaned."
 		    ;;
 		195)
-		    echo  "Ce bundle alloue de la mémoire et appelle périodiquement le Garbage Collector pour le libérer."
+		    echo  "Deny of service obtained by excessive use of GarbageCollector (System.gc)."
 		    ;;
 		199)
-		    echo  "Ce bundle déclare et alloue des tableaux avec un grand nombre de cases en attribut de la classe Activator."
+		    echo  "Important tab allocation in Activator class attributes. This bundle installation allocates all JVM RAM and , consequently, the framework raises OutOfMemoryError exception and finishes its execution. "
 		    ;;
 		200)
-		    echo  "Ce bundle alloue des objets en cascade."
+		    echo  "Bulky but empty object cascade declaration (which forces useless use of Garbage Collector), loading and allocation of useless resources from the network (or generation of resources in RAM memory)."
 		    ;;
 		201)
-		    echo  "Ce bundle crée un infinité de fichiers et de dossiers sur la plateforme."
+		    echo  "Creation of a multitude of  nested folders and files (dead memory)."
 		    ;;
 		202)
-		    echo  "Création d'une multitude d'objets en mémoire."
+		    echo  "Creation of a multitude of objects (RAM)."
 		    ;;
 		203)
-		    echo  "Allocation de toute la mémoire vive."
+		    echo  "Native code execution : allocation of all the RAM."
 		    ;;
 		205)
-		    echo  "Ce bundle crée un \"lock\" sur un fichier donnée et ne fera jamais de \"unlock\". Ce fichier n'est donc pas accessible à un autre bundle."
+		    echo  "Deadlock exploitation : shared pertinent resources monopolization (internal local storage (files), RAM storage (objects))."
 		    ;;
 		206)
-		    echo  "Ce bundle implémente des deadlocks dans les services classiques (normalisé par l'OSGi alliance)."
+		    echo  "Deadlock exploitation : creation of a bundle which lists a multitude of classical services (LogService) implemented in a certain maner which provokes a deadlock situation of the calling service."
 		    ;;
 		207)
-		    echo  "Création d'une multitude de bundles."
+		    echo  "Creation of a multitude of bundles."
 		    ;;
 		208) 
-		    echo  "Création d'une multitude de bundles par multuiplication."
+		    echo  "Creation of a multitude of bundles by multiplication."
 		    ;;
 		210)
-		    echo  "Ce bundle exploite une race condition."
+		    echo  "Race condition exploitation : periodic modification (short periods) of pertinent shared datas."
 		    ;;
 		218)
-		    echo  "Accès à un package protégé d'un bundle tiers par \"split package\" : ce bundle exporte un package ayant le même nom que le package protégé du bundle tiers."
+		    echo  "Access to a protected package (non exported package) by creation of a bundle with identical package name (split package)."
 		    ;;
 		220)
-		    echo  "Génération et exécution simultanée d'une multitude de threads."
+		    echo  "Simultaneous generation and execution of a thread multitude."
 		    ;;
 		221)
-		    echo  "Ce bundle monopolise des ressources par la déclaration de threads dormants."
+		    echo  "Memory resources exhaustion with sleeping multithreated bundle (generation of a huge number of sleeping threads)."
 		    ;;
 		225) 
-		    echo  "Modification de l'état des bundles par utilisation des méthodes du bundleContext (start, stop, uninstall)."
+		    echo  "Bundle state modification by Bundle Context use (start()/stop()/uninstall() methods)."
 		    ;;
 		226)
-		    echo  "Exécution permanente du bundle par appel de la méthode start dans la méthode stop."
+		    echo  "Service deny obtained by call of start() method in the bundle stop() method."
 		    ;;
 		230) 
-		    echo  "Injection de données aléatoires dans les services."
+		    echo  "Injections of random data in services."
 		    ;;
 		245)
-		    echo  "Injection de données forgées : valeurs non autorisées, dépassant les bornes imposées par l'API."
+		    echo  "Forged data injection : non athorized values, which exceed imposed API bounds."
 		    ;;
 		250)
-		    echo  "Ce bundle récupère la classe Java depuis un serveur distant et la charge en mémoire."
+		    echo  "Pertinent malicious fragment loading (which does not be signed for example) from the current bundle classloader with Bundle.loadClass() method."
 		    ;;
 		260) 
-		    echo  "Inclusion du framework dans un bundle et copie de l'ensemble des bundles du framework."
+		    echo  "Loading of sensitive classes precompilated from a local directory, a hidden bundle (embedded in the JAR), or from the network."
 		    ;;
 		261)
-		    echo  "Inclusion du framework dansu n bundle et lancement du bundle dans ce nouveau framework (boucle infinie)."
+		    echo  "Framework inclusion in a bundle (embedded framework) and bundle launching in this new framework (infinite loop)."
 		    ;;
 		275)
-		    echo  "Envoie à un serveur distant des fichiers temporaires disponibles sur la plateforme."
+		    echo  "Temporary files hijacking. This bundle sends temporary files to a distant server."
 		    ;;
 		300)
-		    echo  "Crash de la JVM en utilisant JNI (compilation de la librairie native, correspondante à l'OS et processeur hôtes, effectuée lors de la compilation du bundle."
+		    echo  "JVM crash by use of JNI (native code compilation)."
 		    ;;
 		301)
-		    echo  "Crash de la JVM en utilisant JNI (librairies natives incluses dans le bundle pour différents OS et processeurs)."
+		    echo  "JVM crash by use of JNI (inative libraries included in the bundle for different OS and processors)."
 		    ;;
 		302)
-		    echo  "Crash de la JVM en utilisant JNA."
+		    echo  "JVM crash by use of JNA."
 		    ;;
 		303)
-		    echo  "Crash de la JVM en utilisant sun.misc.Unsafe;"
+		    echo  "JVM crash by use of sun.misc.Unsafe library."
 		    ;;
 		304)
-		    echo  "Crash de la JVM par des bogues connus."
+		    echo  "JVM crash by use of known bugs."
 		    ;;
 	    esac
 	    
