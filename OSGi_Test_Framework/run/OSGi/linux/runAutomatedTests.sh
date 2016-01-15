@@ -155,7 +155,7 @@ addIgnored() {
 runTest() {
 
     # Exécution du bundle
-    $DIR/runBundleWithFelix.sh $1 &> $OUTPUT/sysatt$1.stdout &
+    $DIR/runBundleWith$FRAMEWORK.sh $1 &> $OUTPUT/sysatt$1.stdout &
     PID=$!
     CPT_TIME=0
     ABORTED=0
@@ -298,6 +298,22 @@ if ! grep -Fxq "test=true" $DIR/../com.sogetiht.otb.properties.cfg; then
     echo    "  Test mode is not activated in the configuration"
     echo    "  file 'com.sogetiht.otb.properties.cfg'."
     echo -e "  Please set 'test=true'\n"
+    exit 1
+fi
+
+# choix du framework de test
+if  grep -Fxq "framework=felix" $DIR/../com.sogetiht.otb.properties.cfg; then
+	echo -e  " The framework used is : felix\n"	
+	FRAMEWORK="Felix"
+
+elif  grep -Fxq "framework=knopflerfish" $DIR/../com.sogetiht.otb.properties.cfg; then
+	echo -e   " The framework used is : knopflerfish\n"
+	FRAMEWORK="Knopflerfish"
+else 
+    echo    "ERROR"
+    echo    "  None framework is specified in file 'com.sogetiht.otb.properties.cfg'."
+    echo    "  Please set 'framework=Felix' for using felix framework"
+    echo -e "  or 'framework=knopflerfish' for using knopflerfish framework\n"
     exit 1
 fi
 
