@@ -148,7 +148,7 @@ addIgnored() {
 
 # Function which permits to execute the test on OSGi framework
 runTest() {
-
+    
     # Bundle execution
     $DIR/runBundleWith$FRAMEWORK.sh $1 &> $OUTPUT/sysatt$1.stdout &
     PID=$!
@@ -320,6 +320,9 @@ else
     echo -e "  Please set it into the runAutomatedTests.sh.\n"
     exit 1
 fi
+
+# execute server
+xterm -e $DIR/runServer.sh & 
 
 # recover specified IP address in the configuration file
 SERVER_IP_LINE=$(awk '/server.ip=/{ print; exit }' $DIR/../com.sogetiht.otb.properties.cfg)
