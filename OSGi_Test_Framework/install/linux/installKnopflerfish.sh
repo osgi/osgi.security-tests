@@ -15,7 +15,7 @@ if [ ! -d knopflerfish ]; then
 	rm -rf ../master.zip ../knopflerfish.org-master
 
 else
-	echo "ERROR: Knopflerfish est déjà installé. Pour relancer"
-	echo "       l'installation, supprimez le dossier"
-	echo "       knopflerfish et relancez ce script."
+	echo "ERROR: Knopflerfish is already installed. To relaunch"
+	echo "       the installation, delete the knopflerfish directory"
+	echo "       and reexecute this script."
 fi

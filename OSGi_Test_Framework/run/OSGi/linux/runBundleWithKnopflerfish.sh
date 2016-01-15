@@ -26,19 +26,16 @@ usage() {
 	echo "DESCRIPTION"
 	echo "      Ce script permet de lancer les tests unitaires "
 	echo "      développés par Sogeti High Tech."
-	echo "      Merci de vous référer au livrable \"L4.3.5.b : "
-	echo "      Exigence techniques sur le framework de tests d"
-	echo "      intrusion\" pour connaitre le bundleNumber."
 	echo ""
-	echo "ERREUR"
+	echo "ERROR"
 	echo "      $1"
 
 }
 
 
 if [ ! -d knopflerfish ]; then
-  echo "ERROR: Le framework knopflerfish n'est pas installé."
-  echo "       Merci d'exécuter le script installKnopflerfish.sh"
+  echo "ERROR: Knopflerfish framework is not installed."
+   echo "      Thanks to execute installKnopflerfish.sh script."
   exit 1
 fi
 if [ $# -ne 1 ]; then

@@ -2,26 +2,22 @@
 
 # Version 1.1
 
-# Ce script lance et vérifie les tests développés dans le cadre d'OpenTheBox.
+# This script execute and check developed tests.
 
-# Pour ce faire, 5 fichiers peuvent être créés :
-#   > sysattXXX        : contient les "println" du bundle
-#   > sysattXXX.stdout : contient la sortie stdout et stderr
-#   > sysattXXX.cpu    : contient le pourcentage de CPU utilisé par le
-#                        processus
-#   > sysattXXX.mem    : contient le pourcentage de mémoire utilisé par le
-#                        processus
-#   > sysattXXX.thread : contient le nombre de threads utilisés par le
-#                        processus
+# For this purpose, 5 files may be created :
+#   > sysattXXX        : contains bundle "println"
+#   > sysattXXX.stdout : contains stdout and stderr outputs
+#   > sysattXXX.cpu    : contains CPU percentage used by the processus
+#   > sysattXXX.mem    : contains memory percentage used by the processus
+#   > sysattXXX.thread : contains the thread number used by the processus
 
-# Pour valider le test, le script cherche dans ces fichiers la présence d'une
-# chaine de caractères précise.
+# In order to valid the test, this script looks for a specific string in these files.
 
-# Afin d'évaluer le cpu, la mémoire et/ou les threads utilisés,
-# les variables CPU, MEMORY et THREADS doivent être mises à true.
+# In order to evaluate the CPU, memory and/or used threads,
+# CPU, MEMORY et THREADS variables must be set at true.
 
 
-# Remettre la console
+# Resst the console
 reset
 
 VERBOSE=false
@@ -31,37 +27,37 @@ bundleArray=()
 
 for param in "$@"
 do
-    # mode verbose activé ?
+    # verbose mode activated ?
     if [ $param == "-v" ]; then
 	VERBOSE=true
 
-    # ajout du bundle ?
+    # bundle add ?
     elif [ $BUNDLE_MODE == true ]; then
 	bundleArray+=($param)	
 	
-    # mode bundle activé ?
+    # bundle mode actived ?
     elif [ $param == "-b" ]; then
 	BUNDLE_MODE=true
     fi
 
 done
 
-# Permet de se placer dans le répertoire "RD_OTB/trunk/test".
-# Cela permet d'exécuter le script depuis n'importe quel répertoire.
+# Permits to be in the test root directory.
+# The script can be executed from any directory.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT="$DIR/../../.."
 
 cd $ROOT
 BUNDLES="$ROOT/tests/bundles"
 
-# Variables à modifier selon la cible sur laquelle les tests seront exécutés
-# afin d'évaluer les résultats
+# Variables which may have to be modified according to the target on which tests will be executed
+# in order to evaluate results
 PC_HIGH_MEM=false
 PC_LOW_MEM=true
 RASPBERRY=false
 
-# Variable pour vérfier la consommation de CPU et/ou mémoire, nombre de threads créés,
-# lors de la validation de tests.
+# Variable to check CPU and/or memory consumption, number of created threads
+# during tests validation.
 VERIFY_RESOURCES=false
 
 TIMEOUT=10
@@ -70,18 +66,18 @@ TMP_DIR="tmp"
 OUTPUT="$TMP_DIR/output"
 NB_CORE=`grep "^core id" /proc/cpuinfo | sort -u | wc -l`
 
-# Vérifier si le nombre de core est 0
+# Check in core number is 0
 if [ $NB_CORE -eq 0 ]; then
     NB_CORE=1
 fi
 
-# Variables pour les statistiques
+# Variables for statistics
 NB_VULNERABLE=0
 NB_INVULNERABLE=0
 NB_TODO=0
 NB_IGNORED=0
 
-# Initialisation du dossier tmp
+# tmp directory initialization
 if [ ! -d $TMP_DIR ]; then
     mkdir $TMP_DIR
     cd $TMP_DIR
@@ -98,8 +94,8 @@ rm -rf $OUTPUT
 mkdir -p $OUTPUT
 i=0
 
-# Fonction permettant de vérifier si un string ($1) est bien présente
-# dans les println exécutés par le framework
+# Function which permits to check if a string ($1) is present
+# in println executed by the framework
 contains() {
     if ! grep -Fq "$1" $OUTPUT/sysatt${list[i]}; then
         echo "  SYS-ATT-${list[i]} ................................ INVULNERABLE"
@@ -108,8 +104,7 @@ contains() {
     fi
 }
 
-# Fonction permettant de vérifier l'utilisation du CPU, Mémoire et du
-# nombre de thread
+# Function which permits to check CPU, memory and thread number use.
 threshold() {
     case $2 in
         1)
@@ -130,37 +125,37 @@ threshold() {
     fi
 }
 
-# Fonction pour incrémenter le nombre de "Passed bundles"
+# Function to increment "Passed bundles" number
 addVulnerable() {
     NB_VULNERABLE=$(($NB_VULNERABLE + 1))
 }
 
-# Fonction pour incrémenter le nombre de "Failed bundles"
+# Function to increment "Failed bundles" number
 addInvulnerable() {
     NB_INVULNERABLE=$(($NB_INVULNERABLE + 1))
 }
 
-# Fonction pour incrémenter le nombre de "Todo bundles"
+# Function to increment "Todo bundles" number
 addTodo() {
     NB_TODO=$(($NB_TODO + 1))
 }
 
-# Fonction pour incrémenter le nombre de "Ignored bundles"
+# Function to increment "Ignored bundles" number
 addIgnored() {
     NB_IGNORED=$(($NB_IGNORED + 1))
 }
 
 
-# Fonction permetttant de lancer le test sur le framework OSGi
+# Function which permits to execute the test on OSGi framework
 runTest() {
 
-    # Exécution du bundle
+    # Bundle execution
     $DIR/runBundleWith$FRAMEWORK.sh $1 &> $OUTPUT/sysatt$1.stdout &
     PID=$!
     CPT_TIME=0
     ABORTED=0
 
-    # Initialise le timeout
+    # Timeout initialization
     case $1 in
         100|110|135|146|155|170|190)
             if $PC_HIGH_MEM || $PC_LOW_MEM; then
@@ -221,27 +216,26 @@ runTest() {
             ;;
     esac
 
-    # Mise en place d'un timeout
+    # Timeout setup
     while ps | grep -q $PID; do
 
-    # Si le processus est toujours exécuté
-    # et que le temps d'exécution est supérieur
-    # au timeout, le processus est tué
+    # If the processus execution time is upper than the timeout
+    # the processus is killed
 	if [ $CPT_TIME -eq $MAX_TIME ]; then
-        # Récupération du PID du framework OSGi
+        # OSGi framework PID recovery 
             JAVA_PID=$(pgrep -P $PID java)
 
             if $VERIFY_RESOURCES; then
 
-	        # Enregistre le nombre de threads utilisés dans un fichier
+	        # Save used thread number in a file
         	echo $(ps hH -fp $JAVA_PID | wc -l) > $OUTPUT/sysatt$1.thread
-       		# Enregistre le pourcentage de CPU utilisé dans un fichier
+       		# Save used CPU percentage in a file
         	if [ $NB_CORE -eq 1 ]; then
             	    echo $(($(ps uh -p $JAVA_PID | awk {'print $3*100'})/100)) > $OUTPUT/sysatt$1.cpu
         	else
             	    echo $(($(ps uh -p $JAVA_PID | awk {'print $3*100'})/($NB_CORE*100))) > $OUTPUT/sysatt$1.cpu
         	fi
-        	# Enregistre le pourcentage de mémoire utilisé dans un fichier
+        	# save used memory percentage in a file
         	if [ $NB_CORE -eq 1 ]; then
             	    echo $(($(ps uh -p $JAVA_PID | awk {'print $4*100'})/100)) > $OUTPUT/sysatt$1.mem
         	else
@@ -250,7 +244,7 @@ runTest() {
 
             fi
 
-        # Tue le processus et ses fils
+        # Kill the processus and sons
             pkill -9 -P $PID
             ABORTED=1
 	fi
@@ -263,7 +257,7 @@ runUtil() {
     if [ "$VERBOSE" == "true" ]; then
 	echo -n -e "TEST SERVER    ............. RUNNING \n"
     fi
-    # Exécution du bundle util = 000
+    # util bundle execution = 000
     $DIR/runBundleWithFelix.sh 000 &> $OUTPUT/util.stdout &
     UTIL_PID=$!
     sleep 8
@@ -301,7 +295,7 @@ if ! grep -Fxq "test=true" $DIR/../com.sogetiht.otb.properties.cfg; then
     exit 1
 fi
 
-# choix du framework de test
+# OSGi framework choice
 if  grep -Fxq "framework=felix" $DIR/../com.sogetiht.otb.properties.cfg; then
 	echo -e  " The framework used is : felix\n"	
 	FRAMEWORK="Felix"
@@ -317,7 +311,7 @@ else
     exit 1
 fi
 
-# vérifier si la variable timeout a été affectée (affectation basée sur la définition du target).
+# check if timeout variable is assigned (assignation based on target definition).
 if ${PC_HIGH_MEM} || ${PC_LOW_MEM} || ${RASPBERRY}; then
     :
 else
@@ -327,19 +321,19 @@ else
     exit 1
 fi
 
-# récupérer l'adresse IP spécifiée dans le fichier de configuration
+# recover specified IP address in the configuration file
 SERVER_IP_LINE=$(awk '/server.ip=/{ print; exit }' $DIR/../com.sogetiht.otb.properties.cfg)
 SERVER_IP=${SERVER_IP_LINE:10:15}
 
-# faire un ping vers l'adresse spécifiée dans le fichier de configuration
+# perform a ping towards specified address in the configuration file
 doPing $SERVER_IP
 
-# si ping
+# if ping
 if grep -Fq "64 bytes from $SERVER_IP" $OUTPUT/ping.stdout; then
     if [ "$VERBOSE" == "true" ]; then
 	echo -n -e " TEST CONNEXION ............. OK \n"
     fi
-	# verifier que le serveur est lancé en utilisant le bundle util
+	# Check if the framework is executed with the util bundle
     runUtil
 
     if grep -Fq "java.lang.Exception: An error has occurred while establishing a connection to the server. Please check your network connection and ensure that the server is running." $OUTPUT/util.stdout; then
@@ -359,7 +353,7 @@ if grep -Fq "64 bytes from $SERVER_IP" $OUTPUT/ping.stdout; then
 	fi
         echo -e " The server is running on $SERVER_IP\n"
     fi
-# si no ping
+# if not ping
 else
     echo    "ERROR"
     echo    "  An error has occurred while establishing a connection"
@@ -374,7 +368,7 @@ fi
 #pkill -9 -P $PING_PID
 pkill -9 -P $UTIL_PID
 
-# Temps de démmarage des tests
+# Tests starting time
 START_TIME=`date +%s`
 
 echo -e " Test Execution:\n"
@@ -399,22 +393,21 @@ for bundle in "${bundleArray[@]}"
 do
     if [ "$bundle" != "$PREVIOUS" ]; then
 
-        # La commande ci-dessous permet d'exclure des tests parmi tous les bundles existants jusqu'au présent
-        # liste de tous les bundles
+        # The command below permits to exclude tests among all existing bundles
+        # List of all bundles
         #[[ $bundle =~ ^010|025|050|055|060|080|085|090|100|110|115|120|135|136|137|138|139|140|145|146|150|155|156|160|161|162|163|164|165|170|171|172|173|174|175|176|177|178|179|185|186|187|190|195|199|200|201|202|203|205|206|207|208|210|218|220|221|225|226|230|235|240|245|250|260|261|265|275|290|300|301|302|303|304$ ]] && continue
-	#[[ $bundle =~ ^221$ ]] && continue #fait planter l'ordi
+	#[[ $bundle =~ ^221$ ]] && continue # a crash occurs
 
-        # Exécution des nouveaux bundles (implémentés par Diana)
+        # Execution of new bundles
         #[[ $bundle =~ ^010|025|050|055|060|080|085|090|100|110|115|120|135|136|137|138|139|140|145|146|150|155|156|160|161|162|163|164|170|171|172|173|174|175|177|190|195|199|200|201|202|203|205|206|210|220|221|230|235|240|250|260|261|265|275|290$ ]] && continue
 
-        # Exécution des bundles livraison IS2T v1.0 - janvier 2014
         #[[ $bundle =~ ^010|025|050|055|060|080|085|090|136|137|138|139|156|160|161|162|163|164|165|176|178|179|185|186|187|199|207|208|218|225|226|235|240|245|250|265|275|290|300|301|302|303|304|305$ ]] && continue
 
 	if [ "$VERBOSE" == "true" ]; then
 	    echo -e "  SYS-ATT-$bundle"
 	    case $bundle in
 		010)
-		    echo  "Construction et envoi de paquets : PING(TCP), TCP et UDP"
+		    echo  "Construction et sending of packets : PING(TCP), TCP and UDP"
 		    ;;
 		025)
 		    echo  "Ce bundle identifie les ports en service par active discovery, en balayant l'ensemble d'un sous-réseau local."
@@ -602,7 +595,7 @@ do
 	    esac
 	    
 	    echo -n -e "   RUNNING"
-	# Exécution du test
+	# Test execution
 	    runTest $bundle
 	    if [ $bundle -eq 190 ]; then
 		runTest $bundle
@@ -621,7 +614,7 @@ do
 	else
 	    
 	    echo -n -e "  SYS-ATT-$bundle ................................ RUNNING"
-	# Exécution du test
+	# Test execution
 	    runTest $bundle
 	    if [ $bundle -eq 190 ]; then
 		runTest $bundle
@@ -640,7 +633,7 @@ do
     fi  
 done
 
-# Nombre de répertoires dans .openthebox créés par le bundle 201
+# Number of directories in .openthebox created by bundle 201
 if [ -d ~/.openthebox ]; then
     NB_DIR=`find ~/.openthebox -type d | wc -l`
 fi
@@ -650,12 +643,12 @@ echo -e "\n Test Report:\n"
 cnt=${#list[@]}
 for ((i=0;i<cnt;i++)); do
 
-    # Test si les fichiers de sorties existent
+    # Test if output files exist
     if [ ! -f $OUTPUT/sysatt${list[i]}.stdout ] || [ ! -f $OUTPUT/sysatt${list[i]} ]; then
         [[ ! ${list[i]} =~ ^146|160|161|162|164|170|172|187|199|203|206$ ]] && echo "  SYS-ATT-${list[i]} ................................ INVULNERABLE" && addInvulnerable && continue
     fi
 
-    # Test si le fichier sysattXXX.stdout contient du texte
+    # Test if sysattXXX.stdout file contains some text
     if [ -s $OUTPUT/sysatt${list[i]}.stdout ];then
         case "${list[i]}" in
             025)
@@ -680,7 +673,7 @@ for ((i=0;i<cnt;i++)); do
                 fi
                 ;;
             146)
-                if ! grep -Fq "Ecriture dans le fichier $HOME/.bashrc" $OUTPUT/sysatt146.stdout; then
+                if ! grep -Fq "Writing in the file $HOME/.bashrc" $OUTPUT/sysatt146.stdout; then
                     echo "  SYS-ATT-146 ................................ INVULNERABLE"
                     addInvulnerable
                     continue
@@ -708,8 +701,8 @@ for ((i=0;i<cnt;i++)); do
                 fi
                 ;;
             110|150|171|173|174|175|176|177|178|179|185|186|187|195|200|201|202|203|205|206|207|208|220|221|261|275)
-                # Doit être ajusté suivant l'OS
-                if ! egrep -q 'Killed|Processus arrêté' $OUTPUT/sysatt${list[i]}.stdout; then
+                # Must be ajusted according to the OS
+                if ! egrep -q 'Killed|Processus stopped' $OUTPUT/sysatt${list[i]}.stdout; then
                     echo "  SYS-ATT-${list[i]} ................................ INVULNERABLE"
                     addInvulnerable
                     continue
@@ -737,7 +730,7 @@ for ((i=0;i<cnt;i++)); do
                 fi
                 ;;
             *)
-                # Un bundle ne doit normalement rien avoir d'écrit dans stdout
+                # A bundle must normally have nothing written in stdout
                 echo "  SYS-ATT-${list[i]} ................................ INVULNERABLE"
                 addInvulnerable
                 continue
@@ -745,10 +738,10 @@ for ((i=0;i<cnt;i++)); do
         esac
     fi
 
-    # Test si le fichier sysattXXX contient du texte
+    # Test if sysattXXX file contains some text
     if [ -s $OUTPUT/sysatt${list[i]} ];then
-        # Test si le fichier sysattXXX contient la string "::ERROR::". Cela
-        # indique que le bundle a levé un exception
+        # Test if sysattXXX file contains "::ERROR::" string. This
+        # shows that the bundle raised an exception.
         if grep -Fq "::ERROR::" $OUTPUT/sysatt${list[i]}; then
             echo "  SYS-ATT-${list[i]} ................................ INVULNERABLE"
             addInvulnerable
@@ -759,8 +752,8 @@ for ((i=0;i<cnt;i++)); do
     fi
 
 
-    # Valide le test en cherchant des string spécifiques dans les fichiers
-    # sysattXXX, sysattXXX.mem, sysattXXX.cpu et sysattXXX.thread
+    # Valid the test by looking for specific strings in
+    # sysattXXX, sysattXXX.mem, sysattXXX.cpu et sysattXXX.thread files
     case "${list[i]}" in
         025)
             if ! grep -Fq "open" $OUTPUT/sysatt025; then
@@ -871,7 +864,7 @@ for ((i=0;i<cnt;i++)); do
                     threshold 5 1
                 fi
             elif $RASPBERRY; then
-                contains "788657867364790503552363213932185062295135977687173263294742533244359449963403342920304284011984623904177212138919638830257642790242637105061926624952829931113462857270763317237396988943922445621451664240254033291864131227428294853277524242407573903240321257405579568660226031904170324062351700858796178922222789623703897374720000000000000000000000000000000000000000000000000"
+            @sl    contains "788657867364790503552363213932185062295135977687173263294742533244359449963403342920304284011984623904177212138919638830257642790242637105061926624952829931113462857270763317237396988943922445621451664240254033291864131227428294853277524242407573903240321257405579568660226031904170324062351700858796178922222789623703897374720000000000000000000000000000000000000000000000000"
                 if $VERIFY_RESOURCES; then
                     threshold 5 1
                 fi
@@ -879,17 +872,17 @@ for ((i=0;i<cnt;i++)); do
             ;;
         174)
             if $PC_HIGH_MEM; then
-                contains "Services créés : 80000"
+                contains "Created services : 80000"
                 if $VERIFY_RESOURCES; then
                     threshold 15 1
                 fi
             elif $PC_LOW_MEM; then
-                contains "Services créés : 35000"
+                contains "Created services : 35000"
                 if $VERIFY_RESOURCES; then
                     threshold 5 1
                 fi
             elif $RASPBERRY; then
-                contains "Services créés : 1000"
+                contains "Created services : 1000"
                 if $VERIFY_RESOURCES; then
                     threshold 5 1
                 fi
@@ -966,7 +959,7 @@ for ((i=0;i<cnt;i++)); do
             fi
             ;;
         200)
-            contains "Allocation en cours..."
+            contains "Allocation in progress..."
             if $PC_HIGH_MEM; then
                 if $VERIFY_RESOURCES; then
                     threshold 25 1

@@ -11,8 +11,8 @@ mv felix-framework-4.2.1 felix
 rm org.apache.felix.main.distribution-4.2.1.tar.gz
 
 else
-  echo "ERROR: Felix est déjà installé. Pour relancer"
-  echo "       l'installation, supprimez le dossier"
-  echo "       felix et relancez ce script."
+  echo "ERROR: Felix is already installed. Pour relaunch"
+  echo "       the installation, delete felix directory"
+  echo "       and reexecute this script."
 
 fi
