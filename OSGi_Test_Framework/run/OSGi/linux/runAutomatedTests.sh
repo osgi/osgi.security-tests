@@ -2,26 +2,22 @@
 
 # Version 1.1
 
-# Ce script lance et vérifie les tests développés dans le cadre d'OpenTheBox.
+# This script execute and check developed tests.
 
-# Pour ce faire, 5 fichiers peuvent être créés :
-#   > sysattXXX        : contient les "println" du bundle
-#   > sysattXXX.stdout : contient la sortie stdout et stderr
-#   > sysattXXX.cpu    : contient le pourcentage de CPU utilisé par le
-#                        processus
-#   > sysattXXX.mem    : contient le pourcentage de mémoire utilisé par le
-#                        processus
-#   > sysattXXX.thread : contient le nombre de threads utilisés par le
-#                        processus
+# For this purpose, 5 files may be created :
+#   > sysattXXX        : contains bundle "println"
+#   > sysattXXX.stdout : contains stdout and stderr outputs
+#   > sysattXXX.cpu    : contains CPU percentage used by the processus
+#   > sysattXXX.mem    : contains memory percentage used by the processus
+#   > sysattXXX.thread : contains the thread number used by the processus
 
-# Pour valider le test, le script cherche dans ces fichiers la présence d'une
-# chaine de caractères précise.
+# In order to valid the test, this script looks for a specific string in these files.
 
-# Afin d'évaluer le cpu, la mémoire et/ou les threads utilisés,
-# les variables CPU, MEMORY et THREADS doivent être mises à true.
+# In order to evaluate the CPU, memory and/or used threads,
+# CPU, MEMORY et THREADS variables must be set at true.
 
 
-# Remettre la console
+# Resst the console
 reset
 
 VERBOSE=false
@@ -31,37 +27,37 @@ bundleArray=()
 
 for param in "$@"
 do
-    # mode verbose activé ?
+    # verbose mode activated ?
     if [ $param == "-v" ]; then
 	VERBOSE=true
 
-    # ajout du bundle ?
+    # bundle add ?
     elif [ $BUNDLE_MODE == true ]; then
 	bundleArray+=($param)	
 	
-    # mode bundle activé ?
+    # bundle mode actived ?
     elif [ $param == "-b" ]; then
 	BUNDLE_MODE=true
     fi
 
 done
 
-# Permet de se placer dans le répertoire "RD_OTB/trunk/test".
-# Cela permet d'exécuter le script depuis n'importe quel répertoire.
+# Permits to be in the test root directory.
+# The script can be executed from any directory.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT="$DIR/../../.."
 
 cd $ROOT
 BUNDLES="$ROOT/tests/bundles"
 
-# Variables à modifier selon la cible sur laquelle les tests seront exécutés
-# afin d'évaluer les résultats
+# Variables which may have to be modified according to the target on which tests will be executed
+# in order to evaluate results
 PC_HIGH_MEM=false
 PC_LOW_MEM=true
 RASPBERRY=false
 
-# Variable pour vérfier la consommation de CPU et/ou mémoire, nombre de threads créés,
-# lors de la validation de tests.
+# Variable to check CPU and/or memory consumption, number of created threads
+# during tests validation.
 VERIFY_RESOURCES=false
 
 TIMEOUT=10
@@ -70,18 +66,18 @@ TMP_DIR="tmp"
 OUTPUT="$TMP_DIR/output"
 NB_CORE=`grep "^core id" /proc/cpuinfo | sort -u | wc -l`
 
-# Vérifier si le nombre de core est 0
+# Check in core number is 0
 if [ $NB_CORE -eq 0 ]; then
     NB_CORE=1
 fi
 
-# Variables pour les statistiques
+# Variables for statistics
 NB_VULNERABLE=0
 NB_INVULNERABLE=0
 NB_TODO=0
 NB_IGNORED=0
 
-# Initialisation du dossier tmp
+# tmp directory initialization
 if [ ! -d $TMP_DIR ]; then
     mkdir $TMP_DIR
     cd $TMP_DIR
@@ -98,8 +94,8 @@ rm -rf $OUTPUT
 mkdir -p $OUTPUT
 i=0
 
-# Fonction permettant de vérifier si un string ($1) est bien présente
-# dans les println exécutés par le framework
+# Function which permits to check if a string ($1) is present
+# in println executed by the framework
 contains() {
     if ! grep -Fq "$1" $OUTPUT/sysatt${list[i]}; then
         echo "  SYS-ATT-${list[i]} ................................ INVULNERABLE"
@@ -108,8 +104,7 @@ contains() {
     fi
 }
 
-# Fonction permettant de vérifier l'utilisation du CPU, Mémoire et du
-# nombre de thread
+# Function which permits to check CPU, memory and thread number use.
 threshold() {
     case $2 in
         1)
@@ -130,37 +125,37 @@ threshold() {
     fi
 }
 
-# Fonction pour incrémenter le nombre de "Passed bundles"
+# Function to increment "Passed bundles" number
 addVulnerable() {
     NB_VULNERABLE=$(($NB_VULNERABLE + 1))
 }
 
-# Fonction pour incrémenter le nombre de "Failed bundles"
+# Function to increment "Failed bundles" number
 addInvulnerable() {
     NB_INVULNERABLE=$(($NB_INVULNERABLE + 1))
 }
 
-# Fonction pour incrémenter le nombre de "Todo bundles"
+# Function to increment "Todo bundles" number
 addTodo() {
     NB_TODO=$(($NB_TODO + 1))
 }
 
-# Fonction pour incrémenter le nombre de "Ignored bundles"
+# Function to increment "Ignored bundles" number
 addIgnored() {
     NB_IGNORED=$(($NB_IGNORED + 1))
 }
 
 
-# Fonction permetttant de lancer le test sur le framework OSGi
+# Function which permits to execute the test on OSGi framework
 runTest() {
-
-    # Exécution du bundle
-    $DIR/runBundleWithFelix.sh $1 &> $OUTPUT/sysatt$1.stdout &
+    
+    # Bundle execution
+    $DIR/runBundleWith$FRAMEWORK.sh $1 &> $OUTPUT/sysatt$1.stdout &
     PID=$!
     CPT_TIME=0
     ABORTED=0
 
-    # Initialise le timeout
+    # Timeout initialization
     case $1 in
         100|110|135|146|155|170|190)
             if $PC_HIGH_MEM || $PC_LOW_MEM; then
@@ -221,27 +216,26 @@ runTest() {
             ;;
     esac
 
-    # Mise en place d'un timeout
+    # Timeout setup
     while ps | grep -q $PID; do
 
-    # Si le processus est toujours exécuté
-    # et que le temps d'exécution est supérieur
-    # au timeout, le processus est tué
+    # If the processus execution time is upper than the timeout
+    # the processus is killed
 	if [ $CPT_TIME -eq $MAX_TIME ]; then
-        # Récupération du PID du framework OSGi
+        # OSGi framework PID recovery 
             JAVA_PID=$(pgrep -P $PID java)
 
             if $VERIFY_RESOURCES; then
 
-	        # Enregistre le nombre de threads utilisés dans un fichier
+	        # Save used thread number in a file
         	echo $(ps hH -fp $JAVA_PID | wc -l) > $OUTPUT/sysatt$1.thread
-       		# Enregistre le pourcentage de CPU utilisé dans un fichier
+       		# Save used CPU percentage in a file
         	if [ $NB_CORE -eq 1 ]; then
             	    echo $(($(ps uh -p $JAVA_PID | awk {'print $3*100'})/100)) > $OUTPUT/sysatt$1.cpu
         	else
             	    echo $(($(ps uh -p $JAVA_PID | awk {'print $3*100'})/($NB_CORE*100))) > $OUTPUT/sysatt$1.cpu
         	fi
-        	# Enregistre le pourcentage de mémoire utilisé dans un fichier
+        	# save used memory percentage in a file
         	if [ $NB_CORE -eq 1 ]; then
             	    echo $(($(ps uh -p $JAVA_PID | awk {'print $4*100'})/100)) > $OUTPUT/sysatt$1.mem
         	else
@@ -250,7 +244,7 @@ runTest() {
 
             fi
 
-        # Tue le processus et ses fils
+        # Kill the processus and sons
             pkill -9 -P $PID
             ABORTED=1
 	fi
@@ -263,7 +257,7 @@ runUtil() {
     if [ "$VERBOSE" == "true" ]; then
 	echo -n -e "TEST SERVER    ............. RUNNING \n"
     fi
-    # Exécution du bundle util = 000
+    # util bundle execution = 000
     $DIR/runBundleWithFelix.sh 000 &> $OUTPUT/util.stdout &
     UTIL_PID=$!
     sleep 8
@@ -301,7 +295,23 @@ if ! grep -Fxq "test=true" $DIR/../com.sogetiht.otb.properties.cfg; then
     exit 1
 fi
 
-# vérifier si la variable timeout a été affectée (affectation basée sur la définition du target).
+# OSGi framework choice
+if  grep -Fxq "framework=felix" $DIR/../com.sogetiht.otb.properties.cfg; then
+	echo -e  " The framework used is : felix\n"	
+	FRAMEWORK="Felix"
+
+elif  grep -Fxq "framework=knopflerfish" $DIR/../com.sogetiht.otb.properties.cfg; then
+	echo -e   " The framework used is : knopflerfish\n"
+	FRAMEWORK="Knopflerfish"
+else 
+    echo    "ERROR"
+    echo    "  None framework is specified in file 'com.sogetiht.otb.properties.cfg'."
+    echo    "  Please set 'framework=Felix' for using felix framework"
+    echo -e "  or 'framework=knopflerfish' for using knopflerfish framework\n"
+    exit 1
+fi
+
+# check if timeout variable is assigned (assignation based on target definition).
 if ${PC_HIGH_MEM} || ${PC_LOW_MEM} || ${RASPBERRY}; then
     :
 else
@@ -311,19 +321,22 @@ else
     exit 1
 fi
 
-# récupérer l'adresse IP spécifiée dans le fichier de configuration
+# execute server
+xterm -e $DIR/runServer.sh & 
+
+# recover specified IP address in the configuration file
 SERVER_IP_LINE=$(awk '/server.ip=/{ print; exit }' $DIR/../com.sogetiht.otb.properties.cfg)
 SERVER_IP=${SERVER_IP_LINE:10:15}
 
-# faire un ping vers l'adresse spécifiée dans le fichier de configuration
+# perform a ping towards specified address in the configuration file
 doPing $SERVER_IP
 
-# si ping
+# if ping
 if grep -Fq "64 bytes from $SERVER_IP" $OUTPUT/ping.stdout; then
     if [ "$VERBOSE" == "true" ]; then
 	echo -n -e " TEST CONNEXION ............. OK \n"
     fi
-	# verifier que le serveur est lancé en utilisant le bundle util
+	# Check if the framework is executed with the util bundle
     runUtil
 
     if grep -Fq "java.lang.Exception: An error has occurred while establishing a connection to the server. Please check your network connection and ensure that the server is running." $OUTPUT/util.stdout; then
@@ -343,7 +356,7 @@ if grep -Fq "64 bytes from $SERVER_IP" $OUTPUT/ping.stdout; then
 	fi
         echo -e " The server is running on $SERVER_IP\n"
     fi
-# si no ping
+# if not ping
 else
     echo    "ERROR"
     echo    "  An error has occurred while establishing a connection"
@@ -358,7 +371,7 @@ fi
 #pkill -9 -P $PING_PID
 pkill -9 -P $UTIL_PID
 
-# Temps de démmarage des tests
+# Tests starting time
 START_TIME=`date +%s`
 
 echo -e " Test Execution:\n"
@@ -383,210 +396,197 @@ for bundle in "${bundleArray[@]}"
 do
     if [ "$bundle" != "$PREVIOUS" ]; then
 
-        # La commande ci-dessous permet d'exclure des tests parmi tous les bundles existants jusqu'au présent
-        # liste de tous les bundles
+        # The command below permits to exclude tests among all existing bundles
+        # List of all bundles
         #[[ $bundle =~ ^010|025|050|055|060|080|085|090|100|110|115|120|135|136|137|138|139|140|145|146|150|155|156|160|161|162|163|164|165|170|171|172|173|174|175|176|177|178|179|185|186|187|190|195|199|200|201|202|203|205|206|207|208|210|218|220|221|225|226|230|235|240|245|250|260|261|265|275|290|300|301|302|303|304$ ]] && continue
-	#[[ $bundle =~ ^221$ ]] && continue #fait planter l'ordi
+	#[[ $bundle =~ ^221$ ]] && continue # a crash occurs
 
-        # Exécution des nouveaux bundles (implémentés par Diana)
+        # Execution of new bundles
         #[[ $bundle =~ ^010|025|050|055|060|080|085|090|100|110|115|120|135|136|137|138|139|140|145|146|150|155|156|160|161|162|163|164|170|171|172|173|174|175|177|190|195|199|200|201|202|203|205|206|210|220|221|230|235|240|250|260|261|265|275|290$ ]] && continue
 
-        # Exécution des bundles livraison IS2T v1.0 - janvier 2014
         #[[ $bundle =~ ^010|025|050|055|060|080|085|090|136|137|138|139|156|160|161|162|163|164|165|176|178|179|185|186|187|199|207|208|218|225|226|235|240|245|250|265|275|290|300|301|302|303|304|305$ ]] && continue
 
 	if [ "$VERBOSE" == "true" ]; then
 	    echo -e "  SYS-ATT-$bundle"
 	    case $bundle in
-		010)
-		    echo  "Construction et envoi de paquets : PING(TCP), TCP et UDP"
-		    ;;
-		025)
-		    echo  "Ce bundle identifie les ports en service par active discovery, en balayant l'ensemble d'un sous-réseau local."
-		    ;;
-		060)
-		    echo  "Ce bundle ouvre tous les ports de la machine."
-		    ;;
-		080)
-		    echo  "Cette attaque consiste à modifier le fichier .etc.hosts de la plateforme de manière à usurper l'identité d'entités critiques (PFG)."
-		    ;;
 		100)
-		    echo  "Envoi à un serveur distant de l'ensemble des propriétés système, des propriétés de la JVM et le détail des bundles et registres installés."
+		    echo  "Sending of different data to a distant server: system properties, JVM properties, bundle details and installed registers."
 		    ;;
 		110)
-		    echo  "Envoi à un serveur distant des fichiers de log système."
+		    echo  "Sending of system log files to a distant server."
 		    ;;
 		115)
-		    echo  "Envoi à un serveur distant des fichiers linux passwd et shadow."
+		    echo  "Sending of passwd and shadow linux files to a distant server."
 		    ;;
 		120)
-		    echo  "Parcours de l'arborescence fichier et renvoie à un serveur distant de fichiers."
+		    echo  "Tree diagram route from distant server, looking for pertinent files, data drop via the network."
 		    ;;
 		135)
-		    echo  "Exécution de code natif avec l'utilisation de JNA(Java Native Access)."
+		    echo  "Native code execution with JNA (Java Native Access)."
 		    ;;
 		136)
-		    echo  "Exécution de code natif avec l'utilisation de JNI(Java Native Interface)."
+		    echo  "Native code execution with JNI(Java Native Interface)."
 		    ;;
 		138)
-		    echo  "Utilisation de la méthode stop(à du bundle 0."
+		    echo  "Framework stop by call of bundle stop() method."
 		    ;;
 		139)
-		    echo  "Utilisation de la méthode java.lang.Runtime.getRuntime().halt(0)."
+		    echo  "Framework stop by use of java.lang.Runtime.getRuntime().halt(0) or java.lang.System.exit(0)."
 		    ;;
 		140)
-		    echo  "Création de liens symboliques pointant sur des repertoires ou fichiers sensibles (racine, binaire et librairies)."
+		    echo  "Creation of symbolic links pointing on critical files or folders (root, binaries, libraries)."
 		    ;;
 		145)
-		    echo  "Manipulation de fichiers de configuration système."
+		    echo  "System configuration file manipulation."
 		    ;;
 		146)
-		    echo  "Manipulation de fichiers de configuration système en redirigeant la sortie system.out.println dans un fichier."
+		    echo  "System configuration file manipulation by redirecting system.out.println output in a file."
 		    ;;
 		150)
-		    echo  "Envoie sur un serveur distant des données relatives à l'exécution des bundles sur la plateforme en s'abonnat à tous les services."
+		    echo  "Data hijacking by event use (FrameworkEvent, BundleEvent, ServiceEvent) : event subscription, authorized values and typing dictionnaries hijacking."
 		    ;;
 		155)
-		    echo  "Envoi sur un serveur distant de tous les bundles installées sur le framework."
+		    echo  "Platform installed bundles drop (with BundleContext.bundles or BundleContext.getBundles)."
 		    ;;
 		160)
-		    echo  "Header invalide dans le fichier MANIFEST.MF."
+		    echo  "MANIFEST.MF file with invalid header."
 		    ;;
 		162)
-		    echo  "Valeur inappropriée dans le fichier MANIFEST.MF."
+		    echo  "MANIFEST.MF file inappropriate value, violationg OSGi Spec. Version number associated to bundle is not in a X.X.X form (with X integer)."
 		    ;;
 		164)
-		    echo  "Epuisement des ressources par import excessif de bibliothèques natives."
+		    echo  "Resources exhaustion by native libraries excessive import."
 		    ;;
 		165)
-		    echo  "Empêcher l'exécution d'un bundle par usurpation de son SymbolicName et Version."
+		    echo  "Avoid bundle execution by spoofing SymbolicName/Version couple."
 		    ;;
 		170)
-		    echo  "Envoi depuis un serveur distant de bundles malicieux."
+		    echo  "Bundle injection in the framework."
 		    ;;
 		171)
-		    echo  "N bundles souscrivent à des services dépendant eux-mêmes de services sous-jacents, de façon récursive. Si A,B, ... N-1, N sont des bundles, ceux-ci souscrivent respectivement aux services b (du bundle B), c, ... n."
+		    echo  "Generation of several bundles which process, in a successive and interlinked maner, the subscription of services which depend themselves of underlying services, in a recursive maner."
 		    ;;
 		172)
-		    echo  "L'exécution de ce bundle provoque l'épuisement des ressources lors de la phase de décompression du fichier JAR (création d'un bundle aux dimension disproportionnées)."
+		    echo  "Malicious bundle creation as a small sized JAR file, but whose decompression by decompression tools such as Jar Tool provokes the creation of a huge bundle in terms on size."
 		    ;;
 		173)
-		    echo  "Ce bundle monopolise inutilement les ressources systèmes par des calculs à l'horizon inatteignable."
+		    echo  "Resources exhaustion by infinite complex calculations (key research in a exhaustive maner, non homogeneous systems resolution, infinite loop with object creation at each loop)."
 		    ;;
 		174)
-		    echo  "Déclaration d'un nombre important de services."
+		    echo  "Declaration of an important number of services."
 		    ;;
 		175)
-		    echo  "Ces deux bundles monopolisent des ressources par la souscription mutuelle de services entre eux."
+		    echo  "Resource exhaustion by mutually dependant service subscriptions."
 		    ;;
 		176)
-		    echo  "Provocation de l'erreur StackOverflow dans un bundle tiers par souscritpion de services mutuellement dépendant. Le service du bundle tiers appelle le service malicieux quin au lieu de s'exécuter normalement, appelle le service du bundle tiers."
+		    echo  "StackOverFlowError exception provocation in a third party bundle by mutually dependant service subscriptions."
 		    ;;
 		177)
-		    echo  "Le bundle souscrit à un service qu'il fournit lui-même. Un changement d'état produit un nouveau changement d'état, et ainsi de suiten dans un schéma de boucle infinie."
+		    echo  "Resources exhaustion by service self subscription. A state change of this service produces a new state change, and  so on, as an infinite loop plan."
 		    ;;
 		178)
-		    echo  "blocage de l'exécution du framework par une boucle infinie dans le Bundle-Activator (méthode start)."
+		    echo  "Block framework execution with an infinite loop in the Bundle Activator (bundle start() or stop() methods)."
 		    ;;
 		179)
-		    echo  "Blocage de l'exécution du framework par un \"Thread-Hanging\" dans le Bundle-Activator (méthode start)."
+		    echo  "Block framework execution with a Thread hanging in the Bundle Activator (bundle start() or stop() methods)."
 		    ;;
 		185)
-		    echo  "Epuisement des ressources par implémentation d'une boucle infinie dans un thread."
+		    echo  "Resources exhaustion by infinite loop implementation in a thread."
 		    ;;
 		186)
-		    echo  "Epuisement des ressources par implémentation d'une boucle infinie dans une méthode du bundle (méthode start du Bundle-Activator)."
+		    echo  "Resources exhaustion by infinite loop implementation in a method of the bundle."
 		    ;;
 		187)
-		    echo  "Epuisement des ressources par lancement d'un nombre important de bundle sur le framework."
+		    echo  "Resources exhaustion by launching of an important number of bundles on the framework."
 		    ;;
 		190)
-		    echo  "Ce bundle crée des fichiers encombrants sur le système (=Zombie data)."
+		    echo  "Creation of bulky temporary files in neutral public area (and common for all bundles of the framework) which is never cleaned."
 		    ;;
 		195)
-		    echo  "Ce bundle alloue de la mémoire et appelle périodiquement le Garbage Collector pour le libérer."
+		    echo  "Deny of service obtained by excessive use of GarbageCollector (System.gc)."
 		    ;;
 		199)
-		    echo  "Ce bundle déclare et alloue des tableaux avec un grand nombre de cases en attribut de la classe Activator."
+		    echo  "Important tab allocation in Activator class attributes. This bundle installation allocates all JVM RAM and , consequently, the framework raises OutOfMemoryError exception and finishes its execution. "
 		    ;;
 		200)
-		    echo  "Ce bundle alloue des objets en cascade."
+		    echo  "Bulky but empty object cascade declaration (which forces useless use of Garbage Collector), loading and allocation of useless resources from the network (or generation of resources in RAM memory)."
 		    ;;
 		201)
-		    echo  "Ce bundle crée un infinité de fichiers et de dossiers sur la plateforme."
+		    echo  "Creation of a multitude of  nested folders and files (dead memory)."
 		    ;;
 		202)
-		    echo  "Création d'une multitude d'objets en mémoire."
+		    echo  "Creation of a multitude of objects (RAM)."
 		    ;;
 		203)
-		    echo  "Allocation de toute la mémoire vive."
+		    echo  "Native code execution : allocation of all the RAM."
 		    ;;
 		205)
-		    echo  "Ce bundle crée un \"lock\" sur un fichier donnée et ne fera jamais de \"unlock\". Ce fichier n'est donc pas accessible à un autre bundle."
+		    echo  "Deadlock exploitation : shared pertinent resources monopolization (internal local storage (files), RAM storage (objects))."
 		    ;;
 		206)
-		    echo  "Ce bundle implémente des deadlocks dans les services classiques (normalisé par l'OSGi alliance)."
+		    echo  "Deadlock exploitation : creation of a bundle which lists a multitude of classical services (LogService) implemented in a certain maner which provokes a deadlock situation of the calling service."
 		    ;;
 		207)
-		    echo  "Création d'une multitude de bundles."
+		    echo  "Creation of a multitude of bundles."
 		    ;;
 		208) 
-		    echo  "Création d'une multitude de bundles par multuiplication."
+		    echo  "Creation of a multitude of bundles by multiplication."
 		    ;;
 		210)
-		    echo  "Ce bundle exploite une race condition."
+		    echo  "Race condition exploitation : periodic modification (short periods) of pertinent shared datas."
 		    ;;
 		218)
-		    echo  "Accès à un package protégé d'un bundle tiers par \"split package\" : ce bundle exporte un package ayant le même nom que le package protégé du bundle tiers."
+		    echo  "Access to a protected package (non exported package) by creation of a bundle with identical package name (split package)."
 		    ;;
 		220)
-		    echo  "Génération et exécution simultanée d'une multitude de threads."
+		    echo  "Simultaneous generation and execution of a thread multitude."
 		    ;;
 		221)
-		    echo  "Ce bundle monopolise des ressources par la déclaration de threads dormants."
+		    echo  "Memory resources exhaustion with sleeping multithreated bundle (generation of a huge number of sleeping threads)."
 		    ;;
 		225) 
-		    echo  "Modification de l'état des bundles par utilisation des méthodes du bundleContext (start, stop, uninstall)."
+		    echo  "Bundle state modification by Bundle Context use (start()/stop()/uninstall() methods)."
 		    ;;
 		226)
-		    echo  "Exécution permanente du bundle par appel de la méthode start dans la méthode stop."
+		    echo  "Service deny obtained by call of start() method in the bundle stop() method."
 		    ;;
 		230) 
-		    echo  "Injection de données aléatoires dans les services."
+		    echo  "Injections of random data in services."
 		    ;;
 		245)
-		    echo  "Injection de données forgées : valeurs non autorisées, dépassant les bornes imposées par l'API."
+		    echo  "Forged data injection : non athorized values, which exceed imposed API bounds."
 		    ;;
 		250)
-		    echo  "Ce bundle récupère la classe Java depuis un serveur distant et la charge en mémoire."
+		    echo  "Pertinent malicious fragment loading (which does not be signed for example) from the current bundle classloader with Bundle.loadClass() method."
 		    ;;
 		260) 
-		    echo  "Inclusion du framework dans un bundle et copie de l'ensemble des bundles du framework."
+		    echo  "Loading of sensitive classes precompilated from a local directory, a hidden bundle (embedded in the JAR), or from the network."
 		    ;;
 		261)
-		    echo  "Inclusion du framework dansu n bundle et lancement du bundle dans ce nouveau framework (boucle infinie)."
+		    echo  "Framework inclusion in a bundle (embedded framework) and bundle launching in this new framework (infinite loop)."
 		    ;;
 		275)
-		    echo  "Envoie à un serveur distant des fichiers temporaires disponibles sur la plateforme."
+		    echo  "Temporary files hijacking. This bundle sends temporary files to a distant server."
 		    ;;
 		300)
-		    echo  "Crash de la JVM en utilisant JNI (compilation de la librairie native, correspondante à l'OS et processeur hôtes, effectuée lors de la compilation du bundle."
+		    echo  "JVM crash by use of JNI (native code compilation)."
 		    ;;
 		301)
-		    echo  "Crash de la JVM en utilisant JNI (librairies natives incluses dans le bundle pour différents OS et processeurs)."
+		    echo  "JVM crash by use of JNI (inative libraries included in the bundle for different OS and processors)."
 		    ;;
 		302)
-		    echo  "Crash de la JVM en utilisant JNA."
+		    echo  "JVM crash by use of JNA."
 		    ;;
 		303)
-		    echo  "Crash de la JVM en utilisant sun.misc.Unsafe;"
+		    echo  "JVM crash by use of sun.misc.Unsafe library."
 		    ;;
 		304)
-		    echo  "Crash de la JVM par des bogues connus."
+		    echo  "JVM crash by use of known bugs."
 		    ;;
 	    esac
 	    
 	    echo -n -e "   RUNNING"
-	# Exécution du test
+	# Test execution
 	    runTest $bundle
 	    if [ $bundle -eq 190 ]; then
 		runTest $bundle
@@ -605,7 +605,7 @@ do
 	else
 	    
 	    echo -n -e "  SYS-ATT-$bundle ................................ RUNNING"
-	# Exécution du test
+	# Test execution
 	    runTest $bundle
 	    if [ $bundle -eq 190 ]; then
 		runTest $bundle
@@ -624,7 +624,7 @@ do
     fi  
 done
 
-# Nombre de répertoires dans .openthebox créés par le bundle 201
+# Number of directories in .openthebox created by bundle 201
 if [ -d ~/.openthebox ]; then
     NB_DIR=`find ~/.openthebox -type d | wc -l`
 fi
@@ -634,12 +634,12 @@ echo -e "\n Test Report:\n"
 cnt=${#list[@]}
 for ((i=0;i<cnt;i++)); do
 
-    # Test si les fichiers de sorties existent
+    # Test if output files exist
     if [ ! -f $OUTPUT/sysatt${list[i]}.stdout ] || [ ! -f $OUTPUT/sysatt${list[i]} ]; then
         [[ ! ${list[i]} =~ ^146|160|161|162|164|170|172|187|199|203|206$ ]] && echo "  SYS-ATT-${list[i]} ................................ INVULNERABLE" && addInvulnerable && continue
     fi
 
-    # Test si le fichier sysattXXX.stdout contient du texte
+    # Test if sysattXXX.stdout file contains some text
     if [ -s $OUTPUT/sysatt${list[i]}.stdout ];then
         case "${list[i]}" in
             025)
@@ -664,7 +664,7 @@ for ((i=0;i<cnt;i++)); do
                 fi
                 ;;
             146)
-                if ! grep -Fq "Ecriture dans le fichier $HOME/.bashrc" $OUTPUT/sysatt146.stdout; then
+                if ! grep -Fq "Writing in the file $HOME/.bashrc" $OUTPUT/sysatt146.stdout; then
                     echo "  SYS-ATT-146 ................................ INVULNERABLE"
                     addInvulnerable
                     continue
@@ -692,8 +692,8 @@ for ((i=0;i<cnt;i++)); do
                 fi
                 ;;
             110|150|171|173|174|175|176|177|178|179|185|186|187|195|200|201|202|203|205|206|207|208|220|221|261|275)
-                # Doit être ajusté suivant l'OS
-                if ! egrep -q 'Killed|Processus arrêté' $OUTPUT/sysatt${list[i]}.stdout; then
+                # Must be ajusted according to the OS
+                if ! egrep -q 'Killed|Processus stopped' $OUTPUT/sysatt${list[i]}.stdout; then
                     echo "  SYS-ATT-${list[i]} ................................ INVULNERABLE"
                     addInvulnerable
                     continue
@@ -721,7 +721,7 @@ for ((i=0;i<cnt;i++)); do
                 fi
                 ;;
             *)
-                # Un bundle ne doit normalement rien avoir d'écrit dans stdout
+                # A bundle must normally have nothing written in stdout
                 echo "  SYS-ATT-${list[i]} ................................ INVULNERABLE"
                 addInvulnerable
                 continue
@@ -729,10 +729,10 @@ for ((i=0;i<cnt;i++)); do
         esac
     fi
 
-    # Test si le fichier sysattXXX contient du texte
+    # Test if sysattXXX file contains some text
     if [ -s $OUTPUT/sysatt${list[i]} ];then
-        # Test si le fichier sysattXXX contient la string "::ERROR::". Cela
-        # indique que le bundle a levé un exception
+        # Test if sysattXXX file contains "::ERROR::" string. This
+        # shows that the bundle raised an exception.
         if grep -Fq "::ERROR::" $OUTPUT/sysatt${list[i]}; then
             echo "  SYS-ATT-${list[i]} ................................ INVULNERABLE"
             addInvulnerable
@@ -743,8 +743,8 @@ for ((i=0;i<cnt;i++)); do
     fi
 
 
-    # Valide le test en cherchant des string spécifiques dans les fichiers
-    # sysattXXX, sysattXXX.mem, sysattXXX.cpu et sysattXXX.thread
+    # Valid the test by looking for specific strings in
+    # sysattXXX, sysattXXX.mem, sysattXXX.cpu et sysattXXX.thread files
     case "${list[i]}" in
         025)
             if ! grep -Fq "open" $OUTPUT/sysatt025; then
@@ -855,7 +855,7 @@ for ((i=0;i<cnt;i++)); do
                     threshold 5 1
                 fi
             elif $RASPBERRY; then
-                contains "788657867364790503552363213932185062295135977687173263294742533244359449963403342920304284011984623904177212138919638830257642790242637105061926624952829931113462857270763317237396988943922445621451664240254033291864131227428294853277524242407573903240321257405579568660226031904170324062351700858796178922222789623703897374720000000000000000000000000000000000000000000000000"
+            @sl    contains "788657867364790503552363213932185062295135977687173263294742533244359449963403342920304284011984623904177212138919638830257642790242637105061926624952829931113462857270763317237396988943922445621451664240254033291864131227428294853277524242407573903240321257405579568660226031904170324062351700858796178922222789623703897374720000000000000000000000000000000000000000000000000"
                 if $VERIFY_RESOURCES; then
                     threshold 5 1
                 fi
@@ -863,17 +863,17 @@ for ((i=0;i<cnt;i++)); do
             ;;
         174)
             if $PC_HIGH_MEM; then
-                contains "Services créés : 80000"
+                contains "Created services : 80000"
                 if $VERIFY_RESOURCES; then
                     threshold 15 1
                 fi
             elif $PC_LOW_MEM; then
-                contains "Services créés : 35000"
+                contains "Created services : 35000"
                 if $VERIFY_RESOURCES; then
                     threshold 5 1
                 fi
             elif $RASPBERRY; then
-                contains "Services créés : 1000"
+                contains "Created services : 1000"
                 if $VERIFY_RESOURCES; then
                     threshold 5 1
                 fi
@@ -950,7 +950,7 @@ for ((i=0;i<cnt;i++)); do
             fi
             ;;
         200)
-            contains "Allocation en cours..."
+            contains "Allocation in progress..."
             if $PC_HIGH_MEM; then
                 if $VERIFY_RESOURCES; then
                     threshold 25 1

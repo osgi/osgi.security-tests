@@ -1,0 +1,15 @@
+#
+# 	LAUNCH SPECIFICATION 
+#
+
+
+Bundle-Version:				1.0.0.${tstamp}
+Bundle-SymbolicName:		com.sogetiht.otf.util.launch
+JPM-Command:				util
+
+
+-runrequires:  \
+	osgi.identity;filter:='(osgi.identity=com.sogetiht.otf.util.provider)',\
+	osgi.identity;filter:='(osgi.identity=com.sogetiht.otf.util.command)'
+
+-runbundles: ${error;You must first resolve this bndrun file before you can run it}

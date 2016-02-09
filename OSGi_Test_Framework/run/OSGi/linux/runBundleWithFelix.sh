@@ -8,37 +8,35 @@ SYSATT187="$ROOT/tests/bundles/sysatt187"
 
 usage() {
 
-    echo "------------------------------------------------------"
-    echo " __   __   ___         ___       ___     __   __      "
-    echo "/  \ |__) |__  |\ |     |  |__| |__     |__) /  \ \_/ "
-    echo "\__/ |    |___ | \|     |  |  | |___    |__) \__/ / \ "
-    echo "                                                      "
-    echo "------------------------------------------------------"
-    echo "                                      SOGETI HIGH TECH"
-    echo "                                www.sogeti-hightech.fr"
+    echo "---------------------------------------------------------------------------------"
+    echo " __   __   __  ___    __   ___  __       __  ___ ___       ___  ___  __ ___  __  "
+    echo "/  \ |__  | __  |    |__  |__  /   |  | |__|  |   |  \ /    |  |__  |__  |  |__  "
+    echo "\__/  __| |__| _|_    __| |___ \__ |__| |  \ _|_  |   |     |  |___  __| |   __| "
+    echo ""
+    echo "---------------------------------------------------------------------------------"
+    echo "                                                                 SOGETI HIGH TECH"
+    echo "                                                           www.sogeti-hightech.fr"
+    echo ""
     echo ""
     echo "NAME"
-    echo "      Framework de tests orientés sécurité OSGi"
+    echo "      OSGi security tests framework"
     echo ""
     echo "USAGE"
     echo "      $0 [bundleNumber]"
     echo ""
     echo "DESCRIPTION"
-    echo "      Ce script permet de lancer les tests unitaires "
-    echo "      développés par Sogeti High Tech."
-    echo "      Merci de vous référer au livrable \"L4.3.5.b : "
-    echo "      Exigence techniques sur le framework de tests d"
-    echo "      intrusion\" pour connaître le bundleNumber."
+    echo "      This script permits to execute unit tests "
+    echo "      developed by Sogeti High Tech."
     echo ""
-    echo "ERREUR"
+    echo "ERROR"
     echo "      $1"
 
 }
 
 
 if [ ! -d felix ]; then
-    echo "ERROR: Le framework felix n'est pas installé."
-    echo "       Merci d'exécuter le script installFelix.sh"
+    echo "ERROR: Felix framework is not installed."
+    echo "       Thanks to execute installFelix.sh script."
     exit 1
 fi
 if [ $# -ne 1 ]; then
