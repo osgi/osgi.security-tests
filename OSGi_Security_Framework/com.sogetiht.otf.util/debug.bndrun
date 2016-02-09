@@ -1,0 +1,13 @@
+#
+# 	DEBUG LAUNCH SPECFICATION 
+#
+
+-include: ~com.sogetiht.otf.util.bndrun
+
+-runrequires.debug:  \
+	${debug-bundles}
+
+-runtrace: true
+
+-runbundles: \
+	${error;Resolve first}

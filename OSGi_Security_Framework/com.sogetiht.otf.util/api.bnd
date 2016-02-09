@@ -1,0 +1,19 @@
+#
+#  API
+#
+
+Bundle-Description: \
+	 API \
+	\
+	${warning;Please update this Bundle-Description in com.sogetiht.otf.util/api.bnd}
+	
+	
+Export-Package:  \
+	com.sogetiht.otf.util.api
+
+Require-Capability: \
+	compile-only
+
+
+-includeresource: {readme.md}
+
