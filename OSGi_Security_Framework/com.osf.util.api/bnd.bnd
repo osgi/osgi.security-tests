@@ -1,0 +1,26 @@
+#
+# 
+#
+
+Bundle-Version:1.0.0.${tstamp}
+Bundle-Description: 				\
+	This is  project. An API project should in general not contain any \
+	implementation code.\
+	\
+	${warning;Please update this Bundle-Description in com.osf.util.api/bnd.bnd}
+
+	
+Export-Package:  \
+	com.osf.util.api;provide:=true
+
+
+Require-Capability: \
+	compile-only
+
+-buildpath: \
+	osgi.enroute.base.api;version=1.0
+
+-testpath: \
+	osgi.enroute.junit.wrapper;version=4.12
+-runbundles: org.apache.felix.log;version='[1.0.1,1.0.2)'
+-resolve: auto
