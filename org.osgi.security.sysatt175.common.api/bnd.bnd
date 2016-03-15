@@ -9,12 +9,6 @@ Bundle-Description: 				\
 	\
 	${warning;Please update this Bundle-Description in org.osgi.security.sysatt175.common.api/bnd.bnd}
 
-	
-
-
-Require-Capability: \
-	compile-only
-
 -buildpath: \
 	osgi.enroute.base.api;version=1.0
 

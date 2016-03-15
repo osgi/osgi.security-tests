@@ -14,12 +14,10 @@ Export-Package:  \
 	org.osgi.security.util.api;provide:=true
 
 
-Require-Capability: \
-	compile-only
-
 -buildpath: \
 	osgi.enroute.base.api;version=1.0
 
 -testpath: \
 	osgi.enroute.junit.wrapper;version=4.12
 -runbundles: org.apache.felix.log;version='[1.0.1,1.0.2)'
+Bundle-Activator: org.osgi.security.util.api.UtilActivator

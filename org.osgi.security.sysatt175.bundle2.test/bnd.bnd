@@ -27,3 +27,7 @@ Test-Cases: ${test-cases}
 Export-Package: org.osgi.security.sysatt175.common.api
 Bundle-Activator: org.osgi.security.sysatt175.bundle2.test.Activator
 Private-Package: org.osgi.security.sysatt175.bundle2.test
+-runbundles: \
+	org.apache.felix.log;version='[1.0.1,1.0.2)',\
+	org.osgi.security.sysatt175.bundle2.test;version=snapshot,\
+	org.osgi.security.util.api;version=snapshot

@@ -700,14 +700,14 @@ public class UtilImpl implements Util
     				err(e);
     			}
 		
-    			System.out.println("------------------------------------------------------");
-				System.out.println(" __   __   ___         ___       ___     __   __      ");
-				System.out.println("/  \\ |__) |__  |\\ |     |  |__| |__     |__) /  \\ \\_/ ");
-				System.out.println("\\__/ |    |___ | \\|     |  |  | |___    |__) \\__/ / \\ ");
+    			System.out.println("---------------------------------------------------------------------------------");
+    			System.out.println(" __   __   __  ___    __   ___  __       __  ___ ___       ___  ___  __ ___  __  ");
+    			System.out.println("/  \\ |__  | __  |    |__  |__  /   |  | |__|  |   |  \\ /    |  |__  |__  |  |__  ");
+    			System.out.println("\\__/  __| |__| _|_    __| |___ \\__ |__| |  \\ _|_  |   |     |  |___  __| |   __| ");
+    			System.out.println("");
+    			System.out.println("---------------------------------------------------------------------------------");
 				System.out.println("");
-				System.out.println("------------------------------------------------------");
-				System.out.println("                                      SOGETI HIGH TECH");
-				System.out.println("                                www.sogeti-hightech.fr");
+				System.out.println("");
 				System.out.println(" -----------");
 				System.out.println("| " + name + " |");
 				System.out.println(" -----------");

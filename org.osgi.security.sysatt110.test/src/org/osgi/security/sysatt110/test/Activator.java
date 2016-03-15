@@ -94,7 +94,7 @@ public class Activator implements BundleActivator
     	}
     	else
     	{
-    		System.err.println("Service not available. Please install the package com.sogetiht.otb.util.jar");
+    		System.err.println("Service not available. Please install the package org.osgi.security.util.api.jar");
     	}
     }
 

@@ -25,7 +25,7 @@ public class Activator implements BundleActivator
 	{ 
 		if (dict.isEmpty())
 		{
-			dict.put("servicegroup", "com.sogetiht.otb.sysatt175");
+			dict.put("servicegroup", "org.osgi.security.sysatt175");
 			dict.put("servicenumber", "bundle1");
 			dict.put("key", Integer.toString(key));
 			key++;
@@ -86,7 +86,7 @@ public class Activator implements BundleActivator
 			util.start("sysatt175", "Deadlock", "Exploitation de deadlock par souscription de services mutuellement dépendant");
 			try
 			{
-				String filter1 = "(&(servicenumber=bundle2)(servicegroup=com.sogetiht.otb.sysatt175))";
+				String filter1 = "(&(servicenumber=bundle2)(servicegroup=org.osgi.security.sysatt175))";
 				ServiceListener serviceListener = new ServiceListener()
 				{
 					public void serviceChanged(ServiceEvent e)
@@ -152,7 +152,7 @@ public class Activator implements BundleActivator
 		}
 		else
 		{
-			System.err.println("Service not available. Please install the package com.sogetiht.otb.util.jar");
+			System.err.println("Service not available. Please install the package org.osgi.securoty.util.api.jar");
 		}
 	}
 

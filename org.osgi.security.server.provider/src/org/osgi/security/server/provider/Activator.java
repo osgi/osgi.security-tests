@@ -105,7 +105,7 @@ public class Activator implements BundleActivator {
                             out.flush();
                             processCommand(cmd, in, ss1);
 
-                            cmd = new String("get com.sogetiht.otb.properties.cfg");
+                            cmd = new String("get org.osgi.security.properties.cfg");
                             out.println(cmd);
                             out.flush();
                             processCommand(cmd, in, ss1);

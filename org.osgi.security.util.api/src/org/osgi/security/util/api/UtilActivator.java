@@ -27,7 +27,7 @@ public class UtilActivator implements BundleActivator
 		// pour test sur felix (RPI)
 		// File file = new File("com.sogetiht.otb.properties.cfg");
 		// Pour test sur livebox
-		File file = new File(System.getProperty("user.dir") + "/" + "com.sogetiht.otb.properties.cfg");
+		File file = new File(System.getProperty("user.dir") + "/" + "org.osgi.security.properties.cfg");
 		try
 		{
 			//load a property file
