@@ -29,7 +29,6 @@ public class Activator implements BundleActivator
 		return bundleContext;
     }
 
-	
   	public void start(BundleContext context) throws Exception
   	{
   		Activator.bundleContext = context;
@@ -37,6 +36,7 @@ public class Activator implements BundleActivator
     	if (service != null)
     	{
     		main(service);
+
     	}
     	else
     	{
@@ -49,7 +49,7 @@ public class Activator implements BundleActivator
         			{
     	            	case ServiceEvent.REGISTERED:
     	            		main(service);
-    	            		break;
+    	               		break;
     	             	default:
     	            		// Nothing
     	            		break;
@@ -61,9 +61,7 @@ public class Activator implements BundleActivator
     	}
     }
   	
-
-  	@Test
-  	private void main (ServiceReference<?> service)
+  	private void main(ServiceReference<?> service)
   	{
   		util = (Util) getContext().getService(service);
     	if (util != null)
@@ -71,7 +69,7 @@ public class Activator implements BundleActivator
     		util.start("sysatt110","Récupération de fichiers de logs","Récupération des fichiers pertinents de log système");
     	    try
     	    {
-    	    	Assert.assertEquals((double) 0, util.sendCmd("sysatt110"), (double) 0);
+    	    	util.sendCmd("sysatt110");
     	    	File dir = new File("/var/log/");
     	        File list[] ;
     	        list = dir.listFiles();
@@ -80,10 +78,10 @@ public class Activator implements BundleActivator
     	        {
     	        	if (list[i].isFile()&&list[i].canRead())
     	        	{
-    	        		Assert.assertEquals(0, util.sendFile(list[i]), 0);
+    	        		util.sendFile(list[i]);
     	        	}
     	        }
-    	        Assert.assertEquals(0, util.sendCmd("::done::"), 0);
+    	        util.sendCmd("::done::");
     	    }
     	    catch (Exception e)
     	    {
@@ -97,20 +95,18 @@ public class Activator implements BundleActivator
     		System.err.println("Service not available. Please install the package org.osgi.security.util.api.jar");
     	}
     }
-
   	
   	public void stop(BundleContext context) throws Exception
   	{
   		Activator.bundleContext = null;
     }
   	
-  	/*
   	@Test
     public void testSysatt110() throws Exception
     {
     	
-    	System.out.println(Arrays.toString(bundleContext.getBundles()));
-    	Assert.assertNotNull(bundleContext);
+    	//System.out.println(Arrays.toString(bundleContext.getBundles()));
+    	//Assert.assertNotNull(bundleContext);
+  		Assert.assertTrue(succeed);
     }
-    */
 }

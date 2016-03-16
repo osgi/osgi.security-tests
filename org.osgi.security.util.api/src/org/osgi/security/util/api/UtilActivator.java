@@ -100,12 +100,11 @@ public class UtilActivator implements BundleActivator
 		}
 		
 		return property;
-  }
+	}
 
-
-  public void stop(BundleContext context) throws Exception
-  {
-    serviceRegistration.unregister();
-  }
+	public void stop(BundleContext context) throws Exception
+	{
+		serviceRegistration.unregister();
+	}
   
 }
