@@ -21,9 +21,9 @@ public interface Util {
 
     public String receiveFile();
 
-    public double sendCmd(String string) throws Exception;
+    public void sendCmd(String string) throws Exception;
 
-    public double sendFile(File file) throws Exception;
+    public void sendFile(File file) throws Exception;
 
     public void println_without_server(String value);
 

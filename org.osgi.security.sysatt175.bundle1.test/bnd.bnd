@@ -26,11 +26,14 @@ Test-Cases: ${test-cases}
 -runbundles: \
 	org.apache.felix.log;version='[1.0.1,1.0.2)',\
 	org.osgi.security.sysatt175.bundle1.test;version=snapshot,\
+	org.osgi.security.sysatt175.bundle2.test;version=snapshot,\
 	org.osgi.security.util.api;version=snapshot
 Bundle-Activator: org.osgi.security.sysatt175.bundle1.test.Activator
 -runee: JavaSE-1.8
 -runfw: org.eclipse.osgi
 -dsannotations: *
 Export-Package: org.osgi.security.sysatt175.common.api
--runrequires: osgi.identity;filter:='(osgi.identity=org.osgi.security.sysatt175.bundle1.test)'
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=org.osgi.security.sysatt175.bundle1.test)',\
+	osgi.identity;filter:='(osgi.identity=org.osgi.security.sysatt175.bundle2.test)'
 Private-Package: org.osgi.security.sysatt175.bundle1.test

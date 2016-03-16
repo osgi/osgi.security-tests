@@ -20,7 +20,8 @@ Test-Cases: ${test-cases}
 
 -buildpath: \
 	osgi.enroute.base.api;version=1.0,\
-	osgi.enroute.junit.wrapper;version=4.12
+	osgi.enroute.junit.wrapper;version=4.12,\
+	osgi.enroute.hamcrest.wrapper
 
 
 -runbundles: \
@@ -32,3 +33,4 @@ Test-Cases: ${test-cases}
 -runrequires: osgi.identity;filter:='(osgi.identity=org.osgi.security.sysatt110.test)'
 Bundle-Activator: org.osgi.security.sysatt110.test.Activator
 Private-Package: org.osgi.security.sysatt110.test
+-dsannotations: *

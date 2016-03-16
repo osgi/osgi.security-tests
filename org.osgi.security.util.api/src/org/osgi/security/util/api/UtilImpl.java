@@ -223,7 +223,7 @@ public class UtilImpl implements Util
     }
 
 
-    public double sendCmd(String string) throws Exception
+    public void sendCmd(String string) throws Exception
     {    	
     	if (socket != null && displayServer)
     	{
@@ -249,11 +249,10 @@ public class UtilImpl implements Util
             throw new Exception("No connection to the server. Please fill in the configuration file and ensure that the server is running");
     	}
     	
-    	return 0;
     }
 
     
-    public double sendFile(File file) throws Exception
+    public void sendFile(File file) throws Exception
     {
         if (socket != null && displayServer)
         {
@@ -321,7 +320,6 @@ public class UtilImpl implements Util
         	throw new Exception("No connection to the server. Please fill in the configuration file and ensure that the server is running");
         }
         
-        return 0;
     }
     
     
