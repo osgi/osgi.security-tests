@@ -4,6 +4,5 @@ encoding/.gitignore=UTF-8
 encoding/.project=UTF-8
 encoding//.settings/org.eclipse.jdt.core.prefs=UTF-8
 encoding//src/org/osgi/security/sysatt175/bundle1/test/Activator.java=UTF-8
-encoding//test/.gitignore=UTF-8
 encoding/bnd.bnd=UTF-8
 encoding/readme.md=UTF-8

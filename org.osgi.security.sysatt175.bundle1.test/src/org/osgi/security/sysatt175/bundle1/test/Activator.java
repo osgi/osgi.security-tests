@@ -43,9 +43,7 @@ public class Activator implements BundleActivator
 	public void start(BundleContext context) throws Exception
 	{
 		Activator.bundleContext = context;
-
-		ServiceReference<?> service = getContext().getServiceReference(
-				Util.class.getName());
+		ServiceReference<?> service = getContext().getServiceReference(Util.class.getName());
 		if (service != null)
 		{
 			main(service);
@@ -152,7 +150,7 @@ public class Activator implements BundleActivator
 		}
 		else
 		{
-			System.err.println("Service not available. Please install the package org.osgi.securoty.util.api.jar");
+			System.err.println("Service not available. Please install the package org.osgi.security.util.api.jar");
 		}
 	}
 

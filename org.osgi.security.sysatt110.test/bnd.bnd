@@ -3,18 +3,9 @@
 #
 
 Bundle-Version:1.0.0.${tstamp}
-Bundle-Description: \
- 	This bundle is an OSGi test bundle that tests the enRoute Blog Manager API. Projects\
- 	that provide this API should configure their bnd.bnd file to run this test so that\
- 	the providers can test their conformance. This bundle requires DSTest to run so this\
- 	bundle should be included. \
-	\
-	${warning;Please update this Bundle-Description in org.osgi.security.sysatt110.test/bnd.bnd}
+Bundle-Description: Sysatt110 test bundle
 
-
-
-Test-Cases: ${test-cases}
-
+Test-Cases: org.osgi.security.sysatt110.test.Activator
 
 -includeresource: {readme.md}
 
@@ -23,14 +14,17 @@ Test-Cases: ${test-cases}
 	osgi.enroute.junit.wrapper;version=4.12,\
 	osgi.enroute.hamcrest.wrapper
 
-
 -runbundles: \
 	org.apache.felix.log;version='[1.0.1,1.0.2)',\
 	org.osgi.security.sysatt110.test;version=snapshot,\
 	org.osgi.security.util.api;version=snapshot,\
 	osgi.enroute.hamcrest.wrapper;version='[1.3.0,1.3.1)',\
 	osgi.enroute.junit.wrapper;version='[4.12.0,4.12.1)'
+	
 -runrequires: osgi.identity;filter:='(osgi.identity=org.osgi.security.sysatt110.test)'
+
 Bundle-Activator: org.osgi.security.sysatt110.test.Activator
+
 Private-Package: org.osgi.security.sysatt110.test
+
 -dsannotations: *

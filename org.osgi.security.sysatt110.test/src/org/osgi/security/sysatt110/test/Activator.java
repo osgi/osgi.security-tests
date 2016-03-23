@@ -21,22 +21,37 @@ import java.io.File;
 public class Activator implements BundleActivator
 {
 	private static BundleContext bundleContext;
+	private static ServiceReference<?> service;
     private Util util;
-    private boolean succeed = true;
+    private boolean succeed = false;
 
 	static BundleContext getContext()
     {
 		return bundleContext;
     }
+	
+	static ServiceReference<?> getService()
+    {
+		return service;
+    }
 
-  	public void start(BundleContext context) throws Exception
+	public void start(BundleContext context) throws Exception
   	{
   		Activator.bundleContext = context;
-    	ServiceReference<?> service = context.getServiceReference(Util.class.getName());
+    }
+  	
+  	public void stop(BundleContext context) throws Exception
+  	{
+  		Activator.bundleContext = null;
+    }
+  	
+  	@Test
+    public void testSysatt110() throws Exception
+    {
+  		service = getContext().getServiceReference(Util.class.getName());
     	if (service != null)
     	{
-    		main(service);
-
+    		main();
     	}
     	else
     	{
@@ -44,12 +59,16 @@ public class Activator implements BundleActivator
         	{
         		public void serviceChanged(ServiceEvent e)
         		{
-        			ServiceReference<?> service = e.getServiceReference();
+        			service = e.getServiceReference();
         			switch (e.getType())
         			{
     	            	case ServiceEvent.REGISTERED:
-    	            		main(service);
-    	               		break;
+						try {
+							main();
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+							break;
     	             	default:
     	            		// Nothing
     	            		break;
@@ -59,11 +78,13 @@ public class Activator implements BundleActivator
     	    String filter = "(" + Constants.OBJECTCLASS + "=" + Util.class.getName() + ")";
     	    getContext().addServiceListener(listener, filter);
     	}
+  		Assert.assertTrue(succeed);
     }
   	
-  	private void main(ServiceReference<?> service)
+  	@Test
+  	public void main() throws Exception
   	{
-  		util = (Util) getContext().getService(service);
+  		util = (Util) getContext().getService(getService());
     	if (util != null)
     	{
     		util.start("sysatt110","Récupération de fichiers de logs","Récupération des fichiers pertinents de log système");
@@ -73,7 +94,7 @@ public class Activator implements BundleActivator
     	    	File dir = new File("/var/log/");
     	        File list[] ;
     	        list = dir.listFiles();
-
+    	        Assert.assertNotNull(list);
     	        for (int i=0; i<list.length; i++)
     	        {
     	        	if (list[i].isFile()&&list[i].canRead())
@@ -85,28 +106,14 @@ public class Activator implements BundleActivator
     	    }
     	    catch (Exception e)
     	    {
-    	        succeed = false;
     	        util.err(e);
     	    }
+    	    succeed = true;
     	    util.stop(succeed);
     	}
     	else
     	{
     		System.err.println("Service not available. Please install the package org.osgi.security.util.api.jar");
     	}
-    }
-  	
-  	public void stop(BundleContext context) throws Exception
-  	{
-  		Activator.bundleContext = null;
-    }
-  	
-  	@Test
-    public void testSysatt110() throws Exception
-    {
-    	
-    	//System.out.println(Arrays.toString(bundleContext.getBundles()));
-    	//Assert.assertNotNull(bundleContext);
-  		Assert.assertTrue(succeed);
-    }
+  	}
 }
