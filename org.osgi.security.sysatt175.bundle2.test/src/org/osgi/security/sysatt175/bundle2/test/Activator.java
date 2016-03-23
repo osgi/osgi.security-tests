@@ -43,10 +43,9 @@ public class Activator implements BundleActivator
 
 	public void start(BundleContext context) throws Exception
 	{
+		wait(10);
 		Activator.bundleContext = context;
-
-		ServiceReference<?> service = getContext().getServiceReference(
-				Util.class.getName());
+		ServiceReference<?> service = getContext().getServiceReference(Util.class.getName());
 		if (service != null)
 		{
 			main(service);

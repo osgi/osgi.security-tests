@@ -4,6 +4,7 @@
 
 
 Bundle-Version:					1.0.0.${tstamp}
+
 Bundle-Description: 				\
 	A bundle with a provider. Notice that this provider exports the API package. \
 	It also provides a JUnit test and it can be run standalone. \
@@ -21,7 +22,6 @@ Private-Package:  \
 
 -includeresource: {readme.md}
 
-
 -runrequires: \
 	osgi.identity;filter:='(osgi.identity=org.osgi.security.server.provider)',\
 	osgi.identity;filter:='(&(osgi.identity=org.apache.felix.gogo.runtime)(version>=0.16.2))',\
@@ -37,4 +37,5 @@ Private-Package:  \
 	org.osgi.security.server.provider;version=snapshot,\
 	org.osgi.service.event;version='[1.3.1,1.3.2)',\
 	org.osgi.service.metatype;version='[1.3.0,1.3.1)'
+	
 Bundle-Activator: org.osgi.security.server.provider.Activator
