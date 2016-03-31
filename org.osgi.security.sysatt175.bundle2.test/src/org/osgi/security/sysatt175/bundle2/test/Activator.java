@@ -6,28 +6,35 @@ import java.util.Hashtable;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
+
 import org.osgi.security.sysatt175.common.api.HelloWorldService;
 import org.osgi.security.util.api.Util;
 
 public class Activator implements BundleActivator
 {
 	private static BundleContext bundleContext;
+	private static ServiceReference<?> service;
 	private Util util;
-	private ServiceRegistration<?> registration = null;
+	private ServiceRegistration<?> registration;
 	private Hashtable<String,String> dict = new Hashtable<String,String>();
 	private int key = 0;
+	private String filter;
+	private String filter1;
+	private ServiceListener listener;
+	private ServiceListener serviceListener;
 
-
+	
 	private Dictionary<String, String> getDictionary()
 	{ 
 		if (dict.isEmpty())
 		{
 			dict.put("servicegroup", "org.osgi.security.sysatt175");
-			dict.put("servicenumber", "bundle1");
+			dict.put("servicenumber", "bundle2.test");
 			dict.put("key", Integer.toString(key));
 			key++;
 		}  
@@ -40,27 +47,33 @@ public class Activator implements BundleActivator
 		return bundleContext;
 	}
 
+	
+	static ServiceReference<?> getService()
+    {
+		return service;
+    }
+	
 
 	public void start(BundleContext context) throws Exception
 	{
-		wait(10);
 		Activator.bundleContext = context;
-		ServiceReference<?> service = getContext().getServiceReference(Util.class.getName());
+		service = getContext().getServiceReference(Util.class.getName());
+		
 		if (service != null)
-		{
-			main(service);
+		{			
+			serviceProcessing();
 		}
 		else
 		{
-			ServiceListener listener = new ServiceListener()
+			listener = new ServiceListener()
 			{
 				public void serviceChanged(ServiceEvent e)
 				{
-					ServiceReference<?> service = e.getServiceReference();				
+					service = e.getServiceReference();				
 					switch (e.getType())
 					{
 						case ServiceEvent.REGISTERED:
-							main(service);
+							serviceProcessing();
 							break;
 							
 						default:
@@ -69,97 +82,102 @@ public class Activator implements BundleActivator
 					}
 				}
 			};
-
-			String filter = "(" + Constants.OBJECTCLASS + "="
+			
+			filter = "(" + Constants.OBJECTCLASS + "="
 					+ Util.class.getName() + ")";
 			getContext().addServiceListener(listener, filter);
 		}
 	}
-
-
-	private void main (ServiceReference<?> service)
+	
+	
+	private void serviceProcessing()
 	{
-		Object serv = getContext().getService(service);
-		util = (Util) serv;
-		if (util != null)
+		util = (Util) getContext().getService(getService());
+		try
 		{
-			util.start("sysatt175", "Deadlock", "Exploitation de deadlock par souscription de services mutuellement dépendant");
-			try
+			filter1 = "(&(servicenumber=bundle1.test)(servicegroup=org.osgi.security.sysatt175))";
+			registration = getContext().registerService(HelloWorldService.class.getName(), new HelloWorldServiceImpl(), getDictionary());
+			serviceListener = new ServiceListener()
 			{
-				String filter1 = "(&(servicenumber=bundle2)(servicegroup=org.osgi.security.sysatt175))";
-				ServiceListener serviceListener = new ServiceListener()
+				public void serviceChanged(ServiceEvent e)
 				{
-					public void serviceChanged(ServiceEvent e)
+					switch (e.getType())
 					{
-						switch (e.getType())
-						{
-							case ServiceEvent.REGISTERED:
-								new Thread()
-								{
-									public void run()
-									{
-										try
+						case ServiceEvent.REGISTERED:
+							new Thread() {
+				                  public void run() {
+				                	  	try
 										{
 											Thread.sleep(3000);
 										}
-										catch (Exception e)
+										catch (Exception e1)
 										{
-											
+											e1.printStackTrace();
 										}
+										getContext().getServiceReference(HelloWorldService.class.getName());
 										dict.clear();
 										getDictionary();
 										util.println("----------------------------------------------------------------------");
-										util.println("Bundle1: new key generated.");
+										util.println("Bundle2: new key generated.");
 										util.println("----------------------------------------------------------------------");
 										registration.setProperties(dict);
-									}
-								}
-								.start();
-								break;
-              
-							case ServiceEvent.MODIFIED:
-								dict.clear();
-								getDictionary();
-								util.println("Bundle1: Service of " + e.getServiceReference().getBundle().getSymbolicName() + " changed (New key = " + dict.get("key")+").");
-								util.println("----------------------------------------------------------------------");
-								registration.setProperties(dict);
-								break;
-								
-							case ServiceEvent.UNREGISTERING:
-								getContext().ungetService(e.getServiceReference());
-								break;
-             
-							case ServiceEvent.MODIFIED_ENDMATCH:
-								getContext().ungetService(e.getServiceReference());
-								break;
+				                  }
+							}.start();
+							break;
+	      
+						case ServiceEvent.MODIFIED:
+							dict.clear();
+			                getDictionary();
+			                util.println("Bundle2: Service of " + e.getServiceReference().getBundle().getSymbolicName() + " changed (New key = " + dict.get("key") + ")");
+			                util.println("----------------------------------------------------------------------");
+			                if (key % 20 == 0)
+			                {
+			                	new Thread() {
+			                		public void run() {
+			                			registration.setProperties(dict);
+			                		}
+			                	}.start();
+			                }
+			                else
+			                {
+			                	registration.setProperties(dict);		          
+			                }
+			                
+							break;
 							
-							default:
-								// Nothing
-								break;
-						}
+						case ServiceEvent.UNREGISTERING:
+							getContext().ungetService(e.getServiceReference());
+							break;
+	     
+						case ServiceEvent.MODIFIED_ENDMATCH:
+							getContext().ungetService(e.getServiceReference());
+							break;
+						
+						default:
+							// Nothing
+							break;
 					}
-				};
-
-				getContext().addServiceListener(serviceListener, filter1);
-				registration = getContext().registerService(HelloWorldService.class.getName(), new HelloWorldServiceImpl(), getDictionary());
-
-			} 
-			catch (Exception e)
+				}
+			};
+	
+			try
 			{
-				util.err(e);
+				getContext().addServiceListener(serviceListener, filter1);
 			}
-			//util.stop(succeed);
-		}
-		else
+			catch (InvalidSyntaxException e1)
+			{
+				e1.printStackTrace();
+			}
+		} 
+		catch (Exception e)
 		{
-			System.err.println("Service not available. Please install the package org.osgi.security.util.api.jar");
+			util.err(e);
 		}
-	}
-
+	} 
+	
 
 	public void stop(BundleContext context) throws Exception
 	{
-		registration.unregister();
 		Activator.bundleContext = null;
 	}
 }
