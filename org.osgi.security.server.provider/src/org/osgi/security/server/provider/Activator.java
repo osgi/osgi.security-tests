@@ -32,7 +32,7 @@ public class Activator implements BundleActivator
 	
 	public void start(BundleContext context) throws Exception
 	{
-		Thread r = new Thread() {
+		Thread t = new Thread() {
 			
 			public void run()
 			{
@@ -173,7 +173,7 @@ public class Activator implements BundleActivator
 			}
 			
 		};
-		r.start();
+		t.start();
     }
 
     private static void processCommand(String cmd, BufferedReader in, ServerSocket ss1)
@@ -335,143 +335,4 @@ public class Activator implements BundleActivator
 		// TODO Auto-generated method stub
 		
 	}
-/*
-	@Override
-	public void run()
-	{
-		ServerSocket ss, ss1;
-	    Socket socket;
-	    BufferedReader in;
-	    String rep;
-	
-	    try
-	    {
-	        ss = new ServerSocket(port);
-	        ss1 = new ServerSocket(sport);
-	
-	        System.out.println("Server started...");
-	
-	        try
-	        {
-	            while (true)
-	            {
-	                System.out.println("Waiting...");
-	                socket = ss.accept();
-	                System.out.println("Accepted connection : "+socket);
-	                InetAddress IP = socket.getInetAddress();
-	                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-	
-	                rep = receiveMsg(in);
-	
-	                if (rep != null)
-	                {
-	                    if (rep.equals("sysatt120"))
-	                    {
-	                        String cmd;
-	                        PrintWriter out = new PrintWriter(socket.getOutputStream());
-	
-	                        System.out.print(">>> ");
-	
-	                        // for automatized test
-	                        cmd = new String("ls ");
-	                        out.println(cmd);
-	                        out.flush();
-	                        processCommand(cmd, in, ss1);
-	
-	                        cmd = new String("get org.osgi.security.properties.cfg");
-	                        out.println(cmd);
-	                        out.flush();
-	                        processCommand(cmd, in, ss1);
-	
-	                        cmd = new String("cd ..");
-	                        out.println(cmd);
-	                        out.flush();
-	                        processCommand(cmd, in, ss1);
-	
-	                        cmd = new String("ls");
-	                        out.println(cmd);
-	                        out.flush();
-	                        processCommand(cmd, in, ss1);
-	
-	                        receiveMsg(in);
-	                        socket.close();
-	
-	                    }
-	                    else if (rep.equals("sysatt250"))
-	                    {
-	
-	                        try
-	                        {
-	                            System.out.println("Client ready\nENTER THE PATH OF THE FILE YOU WISH TO TRANSFER:");
-	                            String path;
-	                            File file;
-	                            PrintWriter out = new PrintWriter(socket.getOutputStream());
-	                            sc = new Scanner(System.in);
-	
-	                            path = sc.nextLine();
-	                            file = new File(path);
-	                            if (file.exists())
-	                            {
-	                                out.println(file.getName());
-	                                out.flush();
-	                                sendFile(IP,file);
-	                            }
-	                            else
-	                            {
-	                                out.println("null");
-	                                out.flush();
-	                            }
-	                        }
-	                        catch (Exception e)
-	                        {
-	                            System.err.println("!!:bla "+ e.getMessage());
-	                        }
-	                        
-	                        receiveMsg(in);
-	                        socket.close();
-	
-	                    }
-	                    else if (rep.equals("sysatt155") || rep.equals("sysatt156") || rep.equals("sysatt110") || rep.equals("sysatt115")||rep.equals("sysatt275")||rep.equals("sysatt290"))
-	                    {
-	                        rep = in.readLine();
-	                        while (rep != null && !rep.equals("::done::")) 
-	                        {
-	                            if (rep.equals("::send::"))
-	                                receiveFile(ss1);
-	                            else
-	                                System.out.println(rep);
-	                            rep = in.readLine();
-	                        }
-	                        receiveMsg(in);
-	                        socket.close();
-	                    }
-	                    else if (rep.equals("sysatt156"))
-	                    {
-	                        rep = in.readLine();
-	                        if (rep.equals("::send::"))
-	                            receiveFile(ss1);
-	                        else
-	                            System.out.println(rep);
-	
-	                        receiveMsg(in);
-	                        socket.close();
-	                    }
-	                    else
-	                    {
-	                        //System.out.println("No known bundle");
-	                        //socket.close();
-	                    }
-	                }
-	            }
-	        }
-	        catch (Exception e)
-	        {
-	            System.err.println("Exception: " + e.getMessage());
-	        }
-	    }
-	    catch (Exception e)
-	    {
-	        System.err.println("!!: Le port "+port+" ou "+sport+" est déjà utilisé !");
-	    }
-	}*/
 }

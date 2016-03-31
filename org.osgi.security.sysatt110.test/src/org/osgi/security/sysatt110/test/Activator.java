@@ -11,7 +11,6 @@ import org.osgi.framework.ServiceReference;
 
 import org.osgi.security.util.api.Util;
 
-import java.lang.System;
 import java.io.File;
 
 /**
@@ -51,37 +50,7 @@ public class Activator implements BundleActivator
   		service = getContext().getServiceReference(Util.class.getName());
     	if (service != null)
     	{
-    		util = (Util) getContext().getService(getService());
-        	if (util != null)
-        	{
-        		util.start("sysatt110","Récupération de fichiers de logs","Récupération des fichiers pertinents de log système");
-        	    try
-        	    {
-        	    	util.sendCmd("sysatt110");
-        	    	File dir = new File("/var/log/");
-        	        File list[] ;
-        	        list = dir.listFiles();
-        	        Assert.assertNotNull("no access to /var/log/", list);
-        	        for (int i=0; i<list.length; i++)
-        	        {
-        	        	if (list[i].isFile()&&list[i].canRead())
-        	        	{
-        	        		util.sendFile(list[i]);
-        	        	}
-        	        }
-        	        util.sendCmd("::done::");
-        	    }
-        	    catch (Exception e)
-        	    {
-        	        util.err(e);
-        	    }
-        	    succeed = true;
-        	    util.stop(succeed);
-        	}
-        	else
-        	{
-        		System.err.println("Service not available. Please install the package org.osgi.security.util.api.jar");
-        	}
+    		listFiles();
     	}
     	else
     	{
@@ -93,38 +62,13 @@ public class Activator implements BundleActivator
         			switch (e.getType())
         			{
     	            	case ServiceEvent.REGISTERED:
-    	            		util = (Util) getContext().getService(getService());
-    	                	if (util != null)
-    	                	{
-    	                		util.start("sysatt110","Récupération de fichiers de logs","Récupération des fichiers pertinents de log système");
-    	                	    try
-    	                	    {
-    	                	    	util.sendCmd("sysatt110");
-    	                	    	File dir = new File("/var/log/");
-    	                	        File list[] ;
-    	                	        list = dir.listFiles();
-    	                	        Assert.assertNotNull("no access to /var/log/", list);
-    	                	        for (int i=0; i<list.length; i++)
-    	                	        {
-    	                	        	if (list[i].isFile()&&list[i].canRead())
-    	                	        	{
-    	                	        		util.sendFile(list[i]);
-    	                	        	}
-    	                	        }
-    	                	        util.sendCmd("::done::");
-    	                	    }
-    	                	    catch (Exception e1)
-    	                	    {
-    	                	        util.err(e1);
-    	                	    }
-    	                	    succeed = true;
-    	                	    util.stop(succeed);
-    	                	}
-    	                	else
-    	                	{
-    	                		System.err.println("Service not available. Please install the package org.osgi.security.util.api.jar");
-    	                	}
+    	            		try {
+    	            			listFiles();
+    	            		} catch (Exception e1) {
+    	            			util.err(e1);
+    	            		}       	
 							break;
+							
     	             	default:
     	            		// Nothing
     	            		break;
@@ -136,4 +80,32 @@ public class Activator implements BundleActivator
     	}
   		Assert.assertTrue("Test passed", succeed);
     }
+  	
+  	public void listFiles() throws Exception
+  	{
+  		util = (Util) getContext().getService(getService());
+		util.start("sysatt110","Récupération de fichiers de logs","Récupération des fichiers pertinents de log système");
+	    try
+	    {
+	    	util.sendCmd("sysatt110");
+	    	File dir = new File("/var/log/");
+	        File list[] ;
+	        list = dir.listFiles();
+	        Assert.assertNotNull("No access to /var/log/ directory", list);
+	        for (int i=0; i<list.length; i++)
+	        {
+	        	if (list[i].isFile()&&list[i].canRead())
+	        	{
+	        		util.sendFile(list[i]);
+	        	}
+	        }
+    	    succeed = true;
+	        util.sendCmd("::done::");
+	    }
+	    catch (Exception e)
+	    {
+	        util.err(e);
+	    }
+	    util.stop(succeed);
+  	}
 }
