@@ -3,6 +3,8 @@ package org.osgi.security.sysatt175.bundle2.test;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -20,6 +22,7 @@ public class Activator implements BundleActivator
 	private static BundleContext bundleContext;
 	private static ServiceReference<?> service;
 	private Util util;
+	private boolean succeed;
 	private ServiceRegistration<?> registration;
 	private Hashtable<String,String> dict = new Hashtable<String,String>();
 	private int key = 0;
@@ -85,11 +88,16 @@ public class Activator implements BundleActivator
 			
 			filter = "(" + Constants.OBJECTCLASS + "="
 					+ Util.class.getName() + ")";
-			getContext().addServiceListener(listener, filter);
+			try {
+				getContext().addServiceListener(listener, filter);
+			} catch (InvalidSyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 	
-	
+	   
 	private void serviceProcessing()
 	{
 		util = (Util) getContext().getService(getService());
@@ -126,7 +134,7 @@ public class Activator implements BundleActivator
 							break;
 	      
 						case ServiceEvent.MODIFIED:
-							if(key > 50000)
+							if (key > 50000)
 							{	
 								try 
 								{
@@ -143,6 +151,7 @@ public class Activator implements BundleActivator
 				                getDictionary();
 				                util.println("Bundle2: Service of " + e.getServiceReference().getBundle().getSymbolicName() + " changed (New key = " + dict.get("key") + ")");
 				                util.println("----------------------------------------------------------------------");
+				                
 				                if (key % 20 == 0)
 				                {
 				                	new Thread() {
@@ -192,5 +201,7 @@ public class Activator implements BundleActivator
 	public void stop(BundleContext context) throws Exception
 	{
 		Activator.bundleContext = null;
+		succeed = true;
+		util.stop(succeed);
 	}
 }

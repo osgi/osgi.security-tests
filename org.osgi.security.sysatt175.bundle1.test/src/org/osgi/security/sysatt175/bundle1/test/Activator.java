@@ -3,6 +3,8 @@ package org.osgi.security.sysatt175.bundle1.test;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import org.junit.Test;
+import org.junit.Assert;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -20,6 +22,7 @@ public class Activator implements BundleActivator
 	private static BundleContext bundleContext;
 	private static ServiceReference<?> service;
 	private Util util;
+	private boolean succeed = false;
 	private ServiceRegistration<?> registration = null;
 	private Hashtable<String,String> dict = new Hashtable<String,String>();
 	private int key = 0;
@@ -56,6 +59,12 @@ public class Activator implements BundleActivator
 	public void start(BundleContext context) throws Exception
 	{
 		Activator.bundleContext = context;
+	}
+	
+	
+	@Test
+    public void testSysatt175() throws Exception
+    {
 		service = getContext().getServiceReference(Util.class.getName());
 		
 		if (service != null)
@@ -93,8 +102,14 @@ public class Activator implements BundleActivator
 					+ Util.class.getName() + ")";
 			getContext().addServiceListener(listener, filter);
 		}
+		
+		while (key < 50000)
+		{
+			new Thread();
+			Thread.sleep(1);
+		}	
 	}
-	
+
 	
 	private void serviceProcessing() throws Exception
 	{
@@ -131,7 +146,7 @@ public class Activator implements BundleActivator
 							break;
 	      
 						case ServiceEvent.MODIFIED:
-							if(key > 50000) 
+							if (key > 50000) 
 							{
 								try
 								{
@@ -183,10 +198,13 @@ public class Activator implements BundleActivator
 		}
 	} 
 	
-
+	
 	public void stop(BundleContext context) throws Exception
 	{
 		registration.unregister();
 		Activator.bundleContext = null;
+		succeed = true;
+		Assert.assertTrue("Test passed", succeed);
+		util.stop(succeed);
 	}
 }
