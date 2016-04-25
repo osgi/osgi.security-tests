@@ -42,6 +42,7 @@ public class Activator implements BundleActivator
   	public void stop(BundleContext context) throws Exception
   	{
   		Activator.bundleContext = null;
+  		util.stop(succeed);
     }
   	
   	@Test
@@ -106,6 +107,6 @@ public class Activator implements BundleActivator
 	    {
 	        util.err(e);
 	    }
-	    util.stop(succeed);
+	    stop(getContext());
   	}
 }
