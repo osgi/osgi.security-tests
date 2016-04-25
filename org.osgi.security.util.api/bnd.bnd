@@ -15,6 +15,9 @@ Export-Package:  \
 
 -testpath: \
 	osgi.enroute.junit.wrapper;version=4.12
--runbundles: org.apache.felix.log;version='[1.0.1,1.0.2)'
+-runbundles: \
+	org.apache.felix.log;version='[1.0.1,1.0.2)',\
+	org.osgi.security.util.api;version=snapshot
 Bundle-Activator: org.osgi.security.util.api.UtilActivator
 Bundle-Name: Util bundle for SYS-ATT attacks
+-runrequires: osgi.identity;filter:='(osgi.identity=org.osgi.security.util.api)'
