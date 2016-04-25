@@ -7,8 +7,11 @@ import org.osgi.framework.ServiceRegistration;
 import java.util.Properties;
 import java.io.File;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.ClassCastException;
 
 import org.osgi.security.util.api.Util;
@@ -20,9 +23,15 @@ public class UtilActivator implements BundleActivator
 	private boolean displayBox, displayServer, test;
 	private String serverIP;
 	private int port, dport, sport;
+	
+	//To write log file
+	private FileWriter writer = null;
 
 	public void start(BundleContext context) throws Exception
 	{
+		//method to redirect the output System.out and System.err
+		outputRedirection();
+				
 		Properties prop = new Properties();
 		// pour test sur felix (RPI)
 		// File file = new File("com.sogetiht.otb.properties.cfg");
@@ -100,6 +109,53 @@ public class UtilActivator implements BundleActivator
 		}
 		
 		return property;
+	}
+	
+	private void outputRedirection()
+	{
+		try 
+		{
+			//Create and erase previous log file
+			writer = new FileWriter("generated/Log.txt");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		PrintStream stream = new PrintStream(System.out)
+		{
+			public void println(String str)
+			{
+				super.print(str + System.getProperty("line.separator"));
+				try 
+				{
+					writer.append(str, 0, str.length());
+					writer.append(System.getProperty("line.separator"));
+					writer.flush();
+				} 
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}
+			}
+			
+			public void print(String str)
+			{
+				super.print(str);
+				try 
+				{
+					writer.append(str, 0, str.length());
+					writer.flush();
+				} 
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			
+		};
+		
+		System.setOut(stream);
+		System.setErr(stream);
 	}
 
 	public void stop(BundleContext context) throws Exception

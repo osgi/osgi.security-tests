@@ -28,7 +28,6 @@ public class Activator implements BundleActivator
 	private ServiceListener listener;
 	private ServiceListener serviceListener;
 	
-	
 	private Dictionary<String, String> getDictionary()
 	{ 
 		if (dict.isEmpty())
@@ -132,11 +131,25 @@ public class Activator implements BundleActivator
 							break;
 	      
 						case ServiceEvent.MODIFIED:
-							dict.clear();
-							getDictionary();
-							util.println("Bundle1: Service of " + e.getServiceReference().getBundle().getSymbolicName() + " changed (New key = " + dict.get("key")+").");
-							util.println("----------------------------------------------------------------------");
-							registration.setProperties(dict);
+							if(key > 50000) 
+							{
+								try
+								{
+									stop(getContext());
+								} 
+								catch (Exception e1)
+								{
+									e1.printStackTrace();
+								}
+							} 
+							else 
+							{
+								dict.clear();
+								getDictionary();
+								util.println("Bundle1: Service of " + e.getServiceReference().getBundle().getSymbolicName() + " changed (New key = " + dict.get("key")+").");
+								util.println("----------------------------------------------------------------------");
+								registration.setProperties(dict);
+							}
 							break;
 							
 						case ServiceEvent.UNREGISTERING:

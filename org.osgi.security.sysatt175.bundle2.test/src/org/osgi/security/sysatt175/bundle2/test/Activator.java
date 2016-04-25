@@ -126,23 +126,36 @@ public class Activator implements BundleActivator
 							break;
 	      
 						case ServiceEvent.MODIFIED:
-							dict.clear();
-			                getDictionary();
-			                util.println("Bundle2: Service of " + e.getServiceReference().getBundle().getSymbolicName() + " changed (New key = " + dict.get("key") + ")");
-			                util.println("----------------------------------------------------------------------");
-			                if (key % 20 == 0)
-			                {
-			                	new Thread() {
-			                		public void run() {
-			                			registration.setProperties(dict);
-			                		}
-			                	}.start();
-			                }
-			                else
-			                {
-			                	registration.setProperties(dict);		          
-			                }
-			                
+							if(key > 50000)
+							{	
+								try 
+								{
+									stop(getContext());
+								}
+								catch (Exception e1) 
+								{
+									e1.printStackTrace();
+								}
+							}
+							else
+							{
+								dict.clear();
+				                getDictionary();
+				                util.println("Bundle2: Service of " + e.getServiceReference().getBundle().getSymbolicName() + " changed (New key = " + dict.get("key") + ")");
+				                util.println("----------------------------------------------------------------------");
+				                if (key % 20 == 0)
+				                {
+				                	new Thread() {
+				                		public void run() {
+				                			registration.setProperties(dict);
+				                		}
+				                	}.start();
+				                }
+				                else
+				                {
+				                	registration.setProperties(dict);		          
+				                }
+							}    
 							break;
 							
 						case ServiceEvent.UNREGISTERING:
