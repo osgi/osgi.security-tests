@@ -55,7 +55,7 @@ public class UtilImpl implements Util
 			int serverDPort, int serverSPort, boolean automatedTesting) throws Exception
     {
 		// TODO Auto-generated constructor stub
-    
+    	
         if (automatedTesting)
         {
             this.displayConsole = false;

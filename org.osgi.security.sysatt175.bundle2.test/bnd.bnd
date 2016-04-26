@@ -9,7 +9,6 @@ Bundle-Description: Resource exhaustion by mutually dependant service subscripti
 	change its state, which provoke a event sending... etc, as an infinite loop \
 	plan).
 
-Test-Cases: org.osgi.security.sysatt175.bundle2.test.Activator
 
 -includeresource: {readme.md}
 
