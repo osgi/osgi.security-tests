@@ -57,7 +57,7 @@ public class Activator implements BundleActivator
     {
 		serviceRef = new ServiceTracker(getContext(), Util.class.getName(), null);
   		serviceRef.open();
-  		util = (Util) serviceRef.waitForService(0); 
+  		util = (Util) serviceRef.waitForService(30000); 
   		Assert.assertNotNull(util);
   		serviceProcessing();
   	
@@ -84,14 +84,6 @@ public class Activator implements BundleActivator
 						case ServiceEvent.REGISTERED:
 							new Thread() {
 				                  public void run() {
-										try
-										{
-											Thread.sleep(3000);
-										}
-										catch (Exception e1)
-										{
-											e1.printStackTrace();
-										}
 										dict.clear();
 										getDictionary();
 										util.println("----------------------------------------------------------------------");
@@ -159,7 +151,7 @@ public class Activator implements BundleActivator
 	{
 		registration.unregister();
 		succeed = true;
-		Assert.assertTrue("Test passed", succeed);
+		Assert.assertTrue("Test failed", succeed);
 		util.stop(succeed);
 	}
 	

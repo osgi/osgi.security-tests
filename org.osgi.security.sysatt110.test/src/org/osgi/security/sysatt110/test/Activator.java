@@ -46,9 +46,8 @@ public class Activator implements BundleActivator
     {
   		serviceRef = new ServiceTracker(getContext(), Util.class.getName(), null);
   		serviceRef.open();
-  		util = (Util) serviceRef.waitForService(0); 
+  		util = (Util) serviceRef.waitForService(30000); 
   		Assert.assertNotNull(util);
-  		Assert.assertTrue("Test passed", succeed);
   		
   		util.start("sysatt110","System log pertinent files hijacking","System log pertinent files hijacking, and sending of these files on the network to malicious distant server");
 	    try
@@ -72,6 +71,7 @@ public class Activator implements BundleActivator
 	    {
 	        util.err(e);
 	    }
+  		Assert.assertTrue("Test failed", succeed);
 	    unregisteredService();
     }
   	

@@ -53,7 +53,7 @@ public class Activator implements BundleActivator
 	private void serviceTracking() throws InterruptedException, InvalidSyntaxException{
 		serviceRef = new ServiceTracker(getContext(), Util.class.getName(), null);
   		serviceRef.open();
-  		util = (Util) serviceRef.waitForService(0);
+  		util = (Util) serviceRef.waitForService(30000);
   		if(util != null){
   	  		serviceProcessing();
   		}
@@ -75,15 +75,7 @@ public class Activator implements BundleActivator
 						case ServiceEvent.REGISTERED:
 							new Thread() {
 				                  public void run() {
-				                	  	try
-										{
-											Thread.sleep(3000);
-										}
-										catch (Exception e1)
-										{
-											e1.printStackTrace();
-										}
-										getContext().getServiceReference(HelloWorldService.class.getName());
+				                	  	getContext().getServiceReference(HelloWorldService.class.getName());
 										dict.clear();
 										getDictionary();
 										util.println("----------------------------------------------------------------------");
