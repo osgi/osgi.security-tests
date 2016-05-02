@@ -4,34 +4,26 @@ import org.osgi.framework.BundleContext;
 import org.junit.Assert;
 import org.junit.Test;
 import org.osgi.framework.BundleActivator;
-import org.osgi.framework.Constants;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
-import org.osgi.framework.ServiceReference;
 
 import org.osgi.security.util.api.Util;
+import org.osgi.util.tracker.ServiceTracker;
 
 import java.io.File;
 
 /**
  * 
- */
+ **/
 
 public class Activator implements BundleActivator
 {
 	private static BundleContext bundleContext;
-	private static ServiceReference<?> service;
+	private ServiceTracker serviceRef;
     private Util util;
     private boolean succeed = false;
 
 	static BundleContext getContext()
     {
 		return bundleContext;
-    }
-	
-	static ServiceReference<?> getService()
-    {
-		return service;
     }
 
 	public void start(BundleContext context) throws Exception
@@ -42,50 +34,23 @@ public class Activator implements BundleActivator
   	public void stop(BundleContext context) throws Exception
   	{
   		Activator.bundleContext = null;
-  		util.stop(succeed);
     }
+  	
+	private void unregisteredService()
+	{
+  		util.stop(succeed);
+	}
   	
   	@Test
     public void testSysatt110() throws Exception
     {
-  		service = getContext().getServiceReference(Util.class.getName());
-    	if (service != null)
-    	{
-    		listFiles();
-    	}
-    	else
-    	{
-        	ServiceListener listener = new ServiceListener()
-        	{
-        		public void serviceChanged(ServiceEvent e)
-        		{
-        			service = e.getServiceReference();
-        			switch (e.getType())
-        			{
-    	            	case ServiceEvent.REGISTERED:
-    	            		try {
-    	            			listFiles();
-    	            		} catch (Exception e1) {
-    	            			util.err(e1);
-    	            		}       	
-							break;
-							
-    	             	default:
-    	            		// Nothing
-    	            		break;
-        			}
-    	        }
-    	    };
-    	    String filter = "(" + Constants.OBJECTCLASS + "=" + Util.class.getName() + ")";
-    	    getContext().addServiceListener(listener, filter);
-    	}
+  		serviceRef = new ServiceTracker(getContext(), Util.class.getName(), null);
+  		serviceRef.open();
+  		util = (Util) serviceRef.waitForService(0); 
+  		Assert.assertNotNull(util);
   		Assert.assertTrue("Test passed", succeed);
-    }
-  	
-  	public void listFiles() throws Exception
-  	{
-  		util = (Util) getContext().getService(getService());
-		util.start("sysatt110","Récupération de fichiers de logs","Récupération des fichiers pertinents de log système");
+  		
+  		util.start("sysatt110","System log pertinent files hijacking","System log pertinent files hijacking, and sending of these files on the network to malicious distant server");
 	    try
 	    {
 	    	util.sendCmd("sysatt110");
@@ -107,6 +72,8 @@ public class Activator implements BundleActivator
 	    {
 	        util.err(e);
 	    }
-	    stop(getContext());
-  	}
+	    unregisteredService();
+    }
+  	
+  
 }

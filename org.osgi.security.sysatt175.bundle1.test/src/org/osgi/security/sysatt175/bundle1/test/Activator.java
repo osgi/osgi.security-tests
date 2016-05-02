@@ -7,29 +7,26 @@ import org.junit.Test;
 import org.junit.Assert;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 import org.osgi.security.sysatt175.common.api.HelloWorldService;
 import org.osgi.security.util.api.Util;
+import org.osgi.util.tracker.ServiceTracker;
 
 public class Activator implements BundleActivator
 {
 	private static BundleContext bundleContext;
-	private static ServiceReference<?> service;
+	private ServiceTracker serviceRef;
 	private Util util;
 	private boolean succeed = false;
 	private ServiceRegistration<?> registration = null;
 	private Hashtable<String,String> dict = new Hashtable<String,String>();
 	private int key = 0;
 	private String filter;
-	private String filter1;
-	private ServiceListener listener;
-	private ServiceListener serviceListener;
+	private ServiceListener utilListener;
 	
 	private Dictionary<String, String> getDictionary()
 	{ 
@@ -48,13 +45,6 @@ public class Activator implements BundleActivator
 	{
 		return bundleContext;
 	}
-	
-	
-	static ServiceReference<?> getService()
-    {
-		return service;
-    }
-	
 
 	public void start(BundleContext context) throws Exception
 	{
@@ -65,60 +55,27 @@ public class Activator implements BundleActivator
 	@Test
     public void testSysatt175() throws Exception
     {
-		service = getContext().getServiceReference(Util.class.getName());
-		
-		if (service != null)
-		{
-			serviceProcessing();
-		}
-		else
-		{
-			listener = new ServiceListener()
-			{
-				public void serviceChanged(ServiceEvent e)
-				{
-					service = e.getServiceReference();				
-					switch (e.getType())
-					{
-						case ServiceEvent.REGISTERED:
-							try 
-							{
-								serviceProcessing();
-							} 
-							catch (Exception e1)
-							{				
-								e1.printStackTrace();
-							}
-							break;
-							
-						default:
-							// Nothing
-							break;
-					}
-				}
-			};
-
-			filter = "(" + Constants.OBJECTCLASS + "="
-					+ Util.class.getName() + ")";
-			getContext().addServiceListener(listener, filter);
-		}
-		
+		serviceRef = new ServiceTracker(getContext(), Util.class.getName(), null);
+  		serviceRef.open();
+  		util = (Util) serviceRef.waitForService(0); 
+  		Assert.assertNotNull(util);
+  		serviceProcessing();
+  	
 		while (key < 50000)
 		{
-			new Thread();
 			Thread.sleep(1);
-		}	
+		}
+  	
 	}
 
 	
 	private void serviceProcessing() throws Exception
 	{
-		util = (Util) getContext().getService(getService());
-		util.start("sysatt175", "Deadlock", "Exploitation de deadlock par souscription de services mutuellement dépendant");
+		util.start("sysatt175", "Deadlock", "Exploit resource exhaustion by mutually dependant service subscriptions");
 		try
 		{
-			filter1 = "(&(servicenumber=bundle2.test)(servicegroup=org.osgi.security.sysatt175))";
-			serviceListener = new ServiceListener()
+			filter = "(&(servicenumber=bundle2.test)(servicegroup=org.osgi.security.sysatt175))";
+			utilListener = new ServiceListener()
 			{
 				public void serviceChanged(ServiceEvent e)
 				{
@@ -150,7 +107,7 @@ public class Activator implements BundleActivator
 							{
 								try
 								{
-									stop(getContext());
+									unregisteredService();
 								} 
 								catch (Exception e1)
 								{
@@ -184,7 +141,7 @@ public class Activator implements BundleActivator
 	
 			try
 			{
-				getContext().addServiceListener(serviceListener, filter1);
+				getContext().addServiceListener(utilListener, filter);
 			}
 			catch (InvalidSyntaxException e1)
 			{
@@ -195,16 +152,20 @@ public class Activator implements BundleActivator
 		catch (Exception e)
 		{
 			util.err(e);
-		}
+		}	
 	} 
+	
+	private void unregisteredService()
+	{
+		registration.unregister();
+		succeed = true;
+		Assert.assertTrue("Test passed", succeed);
+		util.stop(succeed);
+	}
 	
 	
 	public void stop(BundleContext context) throws Exception
 	{
-		registration.unregister();
 		Activator.bundleContext = null;
-		succeed = true;
-		Assert.assertTrue("Test passed", succeed);
-		util.stop(succeed);
 	}
 }
