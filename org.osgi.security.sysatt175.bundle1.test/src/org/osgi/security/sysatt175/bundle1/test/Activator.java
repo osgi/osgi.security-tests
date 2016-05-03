@@ -26,7 +26,7 @@ public class Activator implements BundleActivator
 	private Hashtable<String,String> dict = new Hashtable<String,String>();
 	private int key = 0;
 	private String filter;
-	private ServiceListener utilListener;
+	private ServiceListener listener;
 	
 	private Dictionary<String, String> getDictionary()
 	{ 
@@ -75,7 +75,7 @@ public class Activator implements BundleActivator
 		try
 		{
 			filter = "(&(servicenumber=bundle2.test)(servicegroup=org.osgi.security.sysatt175))";
-			utilListener = new ServiceListener()
+			listener = new ServiceListener()
 			{
 				public void serviceChanged(ServiceEvent e)
 				{
@@ -99,7 +99,7 @@ public class Activator implements BundleActivator
 							{
 								try
 								{
-									unregisteredService();
+									unregisterService();
 								} 
 								catch (Exception e1)
 								{
@@ -133,7 +133,7 @@ public class Activator implements BundleActivator
 	
 			try
 			{
-				getContext().addServiceListener(utilListener, filter);
+				getContext().addServiceListener(listener, filter);
 			}
 			catch (InvalidSyntaxException e1)
 			{
@@ -147,7 +147,7 @@ public class Activator implements BundleActivator
 		}	
 	} 
 	
-	private void unregisteredService()
+	private void unregisterService()
 	{
 		registration.unregister();
 		succeed = true;
