@@ -36,7 +36,7 @@ public class Activator implements BundleActivator
   		Activator.bundleContext = null;
     }
   	
-	private void unregisteredService()
+	private void unregisterService()
 	{
   		util.stop(succeed);
 	}
@@ -72,7 +72,7 @@ public class Activator implements BundleActivator
 	        util.err(e);
 	    }
   		Assert.assertTrue("Test failed", succeed);
-	    unregisteredService();
+	    unregisterService();
     }
   	
   
