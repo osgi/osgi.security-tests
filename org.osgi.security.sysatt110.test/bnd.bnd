@@ -13,6 +13,7 @@ Test-Cases: org.osgi.security.sysatt110.test.Activator
 -buildpath: \
 	osgi.enroute.base.api;version=1.0,\
 	osgi.enroute.junit.wrapper;version=4.12,\
+	org.osgi.security.util.api;version=project
 
 -runbundles: \
 	org.apache.felix.configadmin;version='[1.8.6,1.8.7)',\

@@ -14,7 +14,10 @@ Bundle-Description: Resource exhaustion by mutually dependant service subscripti
 
 -buildpath: \
 	osgi.enroute.base.api;version=1.0,\
-	osgi.enroute.junit.wrapper;version=4.12
+	osgi.enroute.junit.wrapper;version=4.12,\
+	org.osgi.security.sysatt175.common.api;version=project,\
+	org.osgi.security.util.api;version=project
+
 	
 -runbundles: \
 	org.apache.felix.log;version='[1.0.1,1.0.2)',\
