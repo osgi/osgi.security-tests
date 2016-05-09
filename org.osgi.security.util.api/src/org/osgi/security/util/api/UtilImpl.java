@@ -258,8 +258,12 @@ public class UtilImpl implements Util
         {
             if (socket.isConnected())
             {
-                if (file.length() != 0 )
+                /*
+                 * 
+                 * 
+            	if (file.length() != 0 )
                 {
+                */
                 	try
                 	{
                 		sendCmd("::send::");
@@ -304,11 +308,13 @@ public class UtilImpl implements Util
                 	{
                 		throw new Exception("An error has occurred while establishing a connection to the server. Please check your network connection and ensure that the server is running.");
                 	}
+                /*
                 }
                 else
                 {
-                	throw new Exception("Yout try to send an empty file.");
+                	throw new Exception("You try to send an empty file.");
                 }
+                */
             }
             else
             {
