@@ -23,7 +23,7 @@ public interface Util {
 
     public void sendCmd(String string) throws Exception;
 
-    public void sendFile(File file) throws Exception;
+    public boolean sendFile(File file) throws Exception;
 
     public void println_without_server(String value);
 
@@ -50,5 +50,7 @@ public interface Util {
     public void stop(boolean succeed);
 
     public void setBundleName(String bundleName);
+    
+    public boolean testConnection();
 	
 }

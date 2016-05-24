@@ -46,6 +46,8 @@ public class UtilImpl implements Util
     private PrintWriter out;
     private BufferedReader in;
 
+	private Boolean bool;
+
     static BundleContext getContext()
     {
         return bundleContext;
@@ -252,9 +254,11 @@ public class UtilImpl implements Util
     }
 
     
-    public void sendFile(File file) throws Exception
+    public boolean sendFile(File file) throws Exception
     {
-        if (socket != null && displayServer)
+        bool = false;
+    	
+    	if (socket != null && displayServer)
         {
             if (socket.isConnected())
             {
@@ -302,7 +306,8 @@ public class UtilImpl implements Util
                 		socket4File.close();
 			
                 		println_without_server(file.getName()+" : successfully sent!");
-			
+                		
+                		bool = true;			
                 	}
                 	catch (Exception e)
                 	{
@@ -326,6 +331,7 @@ public class UtilImpl implements Util
         	throw new Exception("No connection to the server. Please fill in the configuration file and ensure that the server is running");
         }
         
+		return bool;
     }
     
     
@@ -817,5 +823,18 @@ public class UtilImpl implements Util
     {
     	this.bundleName = bundleName;
     }
+
+	@Override
+	public boolean testConnection() {
+		// TODO Auto-generated method stub
+		if (socket != null && socket.isConnected())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 }
