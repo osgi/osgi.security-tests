@@ -5,7 +5,7 @@
 Bundle-Version:1.0.0.${tstamp}
 Bundle-Description: Access to /var/log directory, which contains system log files.
 
-Test-Cases: org.osgi.security.sysatt110.test.*
+Test-Cases: org.osgi.security.sysatt110.test.Activator
 
 -includeresource: {readme.md}
 
@@ -34,6 +34,10 @@ Test-Cases: org.osgi.security.sysatt110.test.*
 	osgi.identity;filter:='(&(osgi.identity=org.apache.felix.gogo.runtime)(version>=0.16.2))',\
 	osgi.identity;filter:='(&(osgi.identity=org.osgi.service.event)(version>=1.3.1))'
 
+Bundle-Activator: org.osgi.security.sysatt110.test.Activator
+
 Private-Package: org.osgi.security.sysatt110.test
+
+-dsannotations: *
 
 Bundle-Name: SYS-ATT-110: Access to system log directory
