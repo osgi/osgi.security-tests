@@ -49,14 +49,24 @@ public class Activator implements BundleActivator
   		util = (Util) serviceRef.waitForService(30000); 
   		
   		Assert.assertNotNull("JUnit test issue: util service is not available even after 30 s", util);
-  		util.start("sysatt110","Access to system log directory","Access to /var/log directory, which contains system log files");
+  		util.start("sysatt110","Log files exfiltration as a standard user","Access to pertinent system log directories (ex: /var/log on Linux OS)");
   		
-  		util.println("\n[TEST] Checking access to /var/log directory...\n");
+  		util.print("\n[TEST] Checking access to /var/log directory... ");
   		File dir = new File("/var/log/");
 		File list[] ;
 		list = dir.listFiles();
 		
-		Assert.assertNull("JUnit test issue: logs are accessible by any bundle.", list);
+		//Assert.assertNull("JUnit test issue: logs are accessible by any bundle.", list);
+		
+		if (list != null)
+		{
+			util.println("KO\n");
+			Assert.fail("JUnit test issue: logs are accessible by any bundle.");
+		}
+		else
+		{
+			util.println("OK\n");
+		}
 		
 		succeed = true;
 	    unregisterService();

@@ -71,7 +71,7 @@ public class Activator implements BundleActivator
 	
 	private void serviceProcessing() throws Exception
 	{
-		util.start("sysatt175", "Deadlock", "Exploit resource exhaustion by mutually dependant service subscriptions");
+		util.start("sysatt175", "Resource exhausion", "Resource exhausion exploit by cascade reactions between bundles");
 		try
 		{
 			filter = "(&(servicenumber=bundle2.test)(servicegroup=org.osgi.security.sysatt175))";
