@@ -13,7 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.ClassCastException;
-
 import org.osgi.security.util.api.Util;
 import org.osgi.security.util.api.UtilImpl;
 
@@ -37,27 +36,21 @@ public class UtilActivator implements BundleActivator
 		// File file = new File("com.sogetiht.otb.properties.cfg");
 		// Pour test sur livebox
 		File file = new File(System.getProperty("user.dir") + "/" + "org.osgi.security.properties.cfg");
-		try
-		{
+		try {
 			//load a property file
 			InputStream is = new FileInputStream(file);
 			prop.load(is);
 			is.close();
-		}
-		catch (FileNotFoundException e)
-		{
+		} catch (FileNotFoundException e) {
 			System.err.println("ERROR: Could not load property file '"
 					+ file.getAbsolutePath()
 			        + "'. The system cannot find the file specified.");
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			System.err.println(e);
 			e.printStackTrace();
 		}
 		
-		try
-		{
+		try {
 			//get the property values
 			displayBox    = getProp(prop,"display.box","true").equals("true");
 			displayServer = getProp(prop,"display.server","false").equals("true");
@@ -66,26 +59,20 @@ public class UtilActivator implements BundleActivator
 			dport         = Integer.parseInt(getProp(prop,"server.dport","0"));
 			sport         = Integer.parseInt(getProp(prop,"server.sport","0"));
 			test          = getProp(prop,"test","false").equals("true");
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			System.err.println(e);
 			e.printStackTrace();
 		}
 
-		if (serverIP == null || port == 0)
-		{
+		if (serverIP == null || port == 0) {
 			displayServer = false;
-		}
+		}		
 			
-		try
-		{
+		try {
 			Util service = new UtilImpl(context, displayBox, displayServer,
 			          serverIP, port, dport, sport, test);
 			serviceRegistration = context.registerService(Util.class.getName(), service, null);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			System.err.println(e);
 		}
 	}
@@ -94,17 +81,13 @@ public class UtilActivator implements BundleActivator
 	private String getProp(Properties prop, String key, String defaultValue)
 	{
 		String property = null;
-		try
-		{
+		try {
 			property = prop.getProperty(key);
-		}
-		catch (ClassCastException e)
-		{
+		} catch (ClassCastException e) {
 			System.err.println("ERROR: The property ("+key+") contains any key or value that isn't a string. The default property ("+defaultValue+") is set");
 		}
    
-		if (property == null || property.equals(""))
-		{
+		if (property == null || property.equals("")) {
 			property = defaultValue;
 		}
 		
@@ -113,8 +96,7 @@ public class UtilActivator implements BundleActivator
 	
 	private void outputRedirection()
 	{
-		try 
-		{
+		try {
 			//Create and erase previous log file
 			writer = new FileWriter("generated/Log.txt");
 		} catch (IOException e1) {
@@ -126,14 +108,11 @@ public class UtilActivator implements BundleActivator
 			public void println(String str)
 			{
 				super.print(str + System.getProperty("line.separator"));
-				try 
-				{
+				try {
 					writer.append(str, 0, str.length());
 					writer.append(System.getProperty("line.separator"));
 					writer.flush();
-				} 
-				catch (IOException e) 
-				{
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
@@ -141,17 +120,13 @@ public class UtilActivator implements BundleActivator
 			public void print(String str)
 			{
 				super.print(str);
-				try 
-				{
+				try {
 					writer.append(str, 0, str.length());
 					writer.flush();
-				} 
-				catch (IOException e)
-				{
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			
 		};
 		
 		System.setOut(stream);
