@@ -1,6 +1,7 @@
 package org.osgi.security.util.api;
 
 import java.io.File;
+import java.io.FilePermission;
 import java.io.InputStream;
 import java.lang.Exception;
 
@@ -32,12 +33,20 @@ public interface Util {
     public void println(char value);
 
     public void println(int value);
+    
+    public void println(long value);
+    
+    public void println(boolean value);
 
     public void print(String value);
 
     public void print(char value);
 
     public void print(int value);
+    
+    public void print(long value);
+    
+    public void print(boolean value);
 
     public void err(Exception e);
 
@@ -45,12 +54,21 @@ public interface Util {
 
     public String receiveCmd();
 
-    public void start(String name, String title, String description);
+    public void start(boolean securityManager);
 
     public void stop(boolean succeed);
 
     public void setBundleName(String bundleName);
     
     public boolean testConnection();
-	
+    
+    public boolean setSecurityManager();
+    
+    public boolean checkSecurityManager();
+    
+    /*
+     * Need to have a better understand of Permissions management before use checkPermission method 
+     * 
+    public void checkPermissions(FilePermission perm);
+	*/
 }

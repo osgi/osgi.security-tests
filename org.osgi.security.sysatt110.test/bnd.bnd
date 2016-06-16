@@ -5,7 +5,8 @@
 Bundle-Version:1.0.0.${tstamp}
 Bundle-Description: Access to /var/log directory, which contains system log files.
 
-Test-Cases: org.osgi.security.sysatt110.test.*
+#Test-Cases: org.osgi.security.sysatt110.test.SysAtt110Test
+Test-Cases: ${test-cases}
 
 -includeresource: {readme.md}
 
@@ -21,13 +22,12 @@ Test-Cases: org.osgi.security.sysatt110.test.*
 	org.apache.felix.scr;version='[2.0.0,2.0.1)',\
 	org.eclipse.equinox.event;version='[1.3.100,1.3.101)',\
 	org.eclipse.equinox.metatype;version='[1.4.100,1.4.101)',\
+	org.osgi.security.sysatt110.test;version=snapshot,\
+	org.osgi.security.util.api;version=snapshot,\
 	org.osgi.service.event;version='[1.3.1,1.3.2)',\
 	org.osgi.service.metatype;version='[1.3.0,1.3.1)',\
 	osgi.enroute.hamcrest.wrapper;version='[1.3.0,1.3.1)',\
-	osgi.enroute.junit.wrapper;version='[4.12.0,4.12.1)',\
-	org.osgi.security.server.provider;version=snapshot,\
-	org.osgi.security.util.api;version=snapshot,\
-	org.osgi.security.sysatt110.test;version=snapshot
+	osgi.enroute.junit.wrapper;version='[4.12.0,4.12.1)'
 	
 -runrequires: \
 	osgi.identity;filter:='(osgi.identity=org.osgi.security.sysatt110.test)',\
