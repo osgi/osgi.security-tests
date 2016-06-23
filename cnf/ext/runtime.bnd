@@ -1,0 +1,5 @@
+
+-runfw: org.eclipse.osgi
+-runproperties: org.osgi.framework.security=osgi
+#-runproperties: server.ip=127.0.0.1
+

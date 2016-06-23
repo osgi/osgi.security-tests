@@ -16,14 +16,14 @@ Bundle-Description: Resource exhaustion by mutually dependant service subscripti
 	osgi.enroute.base.api;version=1.0,\
 	osgi.enroute.junit.wrapper;version=4.12,\
 	org.osgi.security.sysatt175.common.api;version=project,\
-	org.osgi.security.util.api;version=project
+	org.osgi.security.test.api;version=project
 
 	
 -runbundles: \
 	org.apache.felix.log;version='[1.0.1,1.0.2)',\
 	org.osgi.security.sysatt175.bundle2.test;version=snapshot,\
 	org.osgi.security.sysatt175.common.api;version=snapshot,\
-	org.osgi.security.util.api;version=snapshot
+	org.osgi.security.test.api;version=snapshot
 Bundle-Activator: org.osgi.security.sysatt175.bundle2.test.Activator
 
 Private-Package: org.osgi.security.sysatt175.bundle2.test
