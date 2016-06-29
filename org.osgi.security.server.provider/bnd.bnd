@@ -2,37 +2,29 @@
 #  BUNDLE 
 #
 
+-buildpath:  \
+	org.osgi.security.test.api;version=1.0,\
+	osgi.enroute.base.api;version=1.0,\
+	osgi.enroute.junit.wrapper;version=4.12
 
 Bundle-Version:					1.0.0.${tstamp}
 
-Bundle-Description: Local server which permits to simulate a distant server for file sending.
+Bundle-Description: A server component which enables tests to be run in a remote framework
 
 Private-Package:  \
 	org.osgi.security.server.provider
 	
--buildpath:  \
-	osgi.enroute.base.api;version=1.0
-	
--testpath: \
-	osgi.enroute.junit.wrapper;version=4.12
-
 -includeresource: {readme.md}
 
-	
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=org.osgi.security.server.provider)'
 -runbundles: \
 	org.apache.felix.configadmin;version='[1.8.6,1.8.7)',\
-	org.apache.felix.gogo.runtime;version='[0.16.2,0.16.3)',\
 	org.apache.felix.log;version='[1.0.1,1.0.2)',\
 	org.apache.felix.scr;version='[2.0.0,2.0.1)',\
-	org.eclipse.equinox.event;version='[1.3.100,1.3.101)',\
 	org.eclipse.equinox.metatype;version='[1.4.100,1.4.101)',\
 	org.osgi.security.server.provider;version=snapshot,\
-	org.osgi.service.event;version='[1.3.1,1.3.2)',\
-	org.osgi.service.metatype;version='[1.3.0,1.3.1)'
-	
-Bundle-Activator: org.osgi.security.server.provider.Activator
--runrequires: \
-	osgi.identity;filter:='(&(osgi.identity=org.apache.felix.gogo.runtime)(version>=0.16.2))',\
-	osgi.identity;filter:='(&(osgi.identity=org.osgi.service.event)(version>=1.3.1))',\
-	osgi.identity;filter:='(osgi.identity=org.osgi.security.server.provider)'
-Bundle-Name: Server for SYS-ATT attacks
+	org.osgi.security.test.api;version=snapshot,\
+	org.osgi.service.metatype;version='[1.3.0,1.3.1)',\
+	osgi.enroute.hamcrest.wrapper;version='[1.3.0,1.3.1)',\
+	osgi.enroute.junit.wrapper;version='[4.12.0,4.12.1)'

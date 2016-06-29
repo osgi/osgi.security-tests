@@ -4,8 +4,6 @@
 # This file defines the properties to be used in an enRoute workspace.
 #
 
--runfw: org.eclipse.osgi
-
 -plugin.enroute.distro = \
 	aQute.bnd.deployer.repository.FixedIndexedRepo; \
 	        name		=       Distro; \
