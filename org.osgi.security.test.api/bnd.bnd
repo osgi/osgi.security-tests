@@ -1,0 +1,16 @@
+#
+# 
+#
+
+-buildpath: \
+	osgi.enroute.base.api;version=1.0,\
+	osgi.enroute.junit.wrapper;version=4.12
+
+Bundle-Version:1.0.0.${tstamp}
+Bundle-Description: The main runner for the OSGi security tests, capable of local or remote testing
+Bundle-Name: Util bundle for SYS-ATT attacks
+
+Export-Package:  \
+	org.osgi.security.test.api;provide:=true
+
+

@@ -11,7 +11,7 @@ import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceRegistration;
 
 import org.osgi.security.sysatt175.common.api.HelloWorldService;
-import org.osgi.security.util.api.Util;
+import org.osgi.security.test.api.Util;
 import org.osgi.util.tracker.ServiceTracker;
 
 public class Activator implements BundleActivator
