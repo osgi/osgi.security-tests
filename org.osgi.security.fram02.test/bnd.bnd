@@ -1,0 +1,28 @@
+#
+#  OSGi TEST BUNDLE 
+#
+
+Bundle-Version:1.0.0.${tstamp}
+Bundle-Name: FRAM-02: DoS - Active bundles manipulation (Malicious use of Bundle Context)
+Bundle-Description: This test case aims to modify the state of all the bundles active on the platform.
+
+Private-Package: org.osgi.security.fram02.test
+Test-Cases: ${test-cases}
+
+-includeresource: {readme.md}
+
+-buildpath: \
+	osgi.enroute.base.api;version=1.0, \
+	osgi.enroute.junit.wrapper;version=4.12
+
+-runrequires: osgi.identity;filter:='(osgi.identity=org.osgi.security.fram02.test)'
+
+-runbundles: \
+	org.apache.felix.log;version='[1.0.1,1.0.2)',\
+	org.osgi.security.fram02.test;version=snapshot,\
+	osgi.enroute.hamcrest.wrapper;version='[1.3.0,1.3.1)',\
+	osgi.enroute.junit.wrapper;version='[4.12.0,4.12.1)'
+	
+-runee: JavaSE-1.8
+
+-runfw: org.eclipse.osgi

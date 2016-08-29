@@ -1,0 +1,32 @@
+#
+#  OSGi TEST BUNDLE 
+#
+
+Bundle-Version: 1.0.0.${tstamp}
+Bundle-Name: CODE-01 : Bundle Native Code - Loading JNA library
+Bundle-Description: Load of JNA (Java Native Access) related libraries to execute native code \
+	from JAVA JVM.
+
+Private-Package: org.osgi.security.code01.test
+Test-Cases: ${test-cases}
+
+-includeresource: {readme.md}
+
+-buildpath: \
+	osgi.enroute.base.api;version=1.0,\
+	osgi.enroute.junit.wrapper;version=4.12,\
+	com.sun.jna
+
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=org.osgi.security.code01.test)'
+
+-runbundles: \
+	com.sun.jna;version='[4.0.0,4.0.1)',\
+	org.apache.felix.log;version='[1.0.1,1.0.2)',\
+	org.osgi.security.code01.test;version=snapshot,\
+	osgi.enroute.hamcrest.wrapper;version='[1.3.0,1.3.1)',\
+	osgi.enroute.junit.wrapper;version='[4.12.0,4.12.1)'
+	
+-runproperties: org.osgi.framework.security=osgi
+-runee: JavaSE-1.8
+-runfw: org.eclipse.osgi

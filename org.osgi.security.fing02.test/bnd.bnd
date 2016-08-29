@@ -1,0 +1,25 @@
+#
+#  OSGi TEST BUNDLE 
+#
+
+Bundle-Version:1.0.0.${tstamp}
+Bundle-Name: FING-02 : Log files exfiltration
+Bundle-Description: Access to pertinent system log directories.
+
+Private-Package: org.osgi.security.fing02.test
+Test-Cases: ${test-cases}
+
+-buildpath: \
+	osgi.enroute.base.api;version=1.0,\
+	osgi.enroute.junit.wrapper;version=4.12,\
+
+-includeresource: {readme.md}
+
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=org.osgi.security.fing02.test)'
+
+-runbundles: \
+	org.apache.felix.log;version='[1.0.1,1.0.2)',\
+	org.osgi.security.fing02.test;version=snapshot,\
+	osgi.enroute.hamcrest.wrapper;version='[1.3.0,1.3.1)',\
+	osgi.enroute.junit.wrapper;version='[4.12.0,4.12.1)'
