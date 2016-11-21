@@ -20,7 +20,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Version;
-import org.osgi.security.test.api.RemoteTestingContstants;
+import org.osgi.security.test.api.RemoteTestingConstants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -30,7 +30,7 @@ import org.osgi.service.component.annotations.Deactivate;
  */
 
 @Component(name = "org.osgi.security.server", service = {})
-public class TestServer implements RemoteTestingContstants
+public class TestServer implements RemoteTestingConstants
 {
 	@interface Config {
 		int port() default 2009;

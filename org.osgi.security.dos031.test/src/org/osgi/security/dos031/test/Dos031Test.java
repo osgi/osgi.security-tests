@@ -16,8 +16,12 @@ package org.osgi.security.dos031.test;
 
 import static org.junit.Assert.fail;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
+
 import java.math.BigInteger;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Dos031Test {
     
 	/* 

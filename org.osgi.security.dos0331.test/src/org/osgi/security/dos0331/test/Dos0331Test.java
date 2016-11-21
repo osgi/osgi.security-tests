@@ -16,7 +16,10 @@ package org.osgi.security.dos0331.test;
 
 import static org.junit.Assert.fail;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Dos0331Test {
 	
 	/* 
@@ -33,7 +36,7 @@ public class Dos0331Test {
     	while (cpt < NUMBER) {
     		A a = new A(0);
     		cpt = a.getNbInstance();
-    		System.out.println("Number of A class instances : " + cpt);
+    		//System.out.println("Number of A class instances : " + cpt);
     	}
     	fail("[FAIL] Infinite number of classes can be instanciated.");
     }

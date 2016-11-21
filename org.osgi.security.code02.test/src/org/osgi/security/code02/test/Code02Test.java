@@ -15,8 +15,12 @@
 package org.osgi.security.code02.test;
 
 import static org.junit.Assert.assertNotEquals;
-import org.junit.Test;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
+
+@RunWith(OSGiSecurityTestRunner.class)
 public class Code02Test {    
 
 	private native boolean runSegFault();

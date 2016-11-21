@@ -22,6 +22,7 @@ Test-Cases: ${test-cases}
 
 -runbundles: \
 	org.apache.felix.log;version='[1.0.1,1.0.2)',\
-	org.osgi.security.Fing03.test;version=snapshot,\
+	org.osgi.security.fing03.test;version=snapshot,\
+	org.osgi.security.test.api;version=snapshot,\
 	osgi.enroute.hamcrest.wrapper;version='[1.3.0,1.3.1)',\
 	osgi.enroute.junit.wrapper;version='[4.12.0,4.12.1)'

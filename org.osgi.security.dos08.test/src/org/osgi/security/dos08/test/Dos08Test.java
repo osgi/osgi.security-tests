@@ -19,7 +19,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Dos08Test {
 
     private File folder = new File(System.getProperty("user.dir") + "/generated/.osgiSecurityFramework");

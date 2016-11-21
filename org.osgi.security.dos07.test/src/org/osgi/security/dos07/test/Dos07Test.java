@@ -17,7 +17,10 @@ package org.osgi.security.dos07.test;
 import static org.junit.Assert.fail;
 import java.io.File;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Dos07Test {
 
     private final File temp = new File(System.getProperty("user.dir") + "/generated/.osgiSecurityFramework");

@@ -15,15 +15,19 @@
 package org.osgi.security.fing01.test;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
+
 import static org.junit.Assert.assertNull;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Fing01Test {
 	
 	@Test
 	public void testFing01(){
 		
 		//Get data about system environment
-		assertNull("[FAIL] System envrionment data are accessible,", System.getenv());	
+		assertNull("[FAIL] System environment data are accessible,", System.getenv());	
 				
 		//Get data about system properties
 		assertNull("[FAIL] System properties are accessible,", System.getProperties());	

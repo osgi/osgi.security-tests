@@ -17,7 +17,10 @@ package org.osgi.security.fing02.test;
 import static org.junit.Assert.assertNull;
 import java.io.File;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Fing02Test
 {
   	@Test

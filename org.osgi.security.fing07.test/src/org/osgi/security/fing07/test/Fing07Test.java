@@ -18,7 +18,10 @@ import java.io.File;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertFalse;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Fing07Test {
 	
 	@Test

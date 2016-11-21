@@ -23,7 +23,10 @@ import java.io.PrintStream;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Fing09Test {
 	
 	private File outputDirectory  = new File(System.getProperty("user.home"), ".osgiSecurityFramework");

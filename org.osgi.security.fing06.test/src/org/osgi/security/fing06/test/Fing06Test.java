@@ -16,12 +16,16 @@ package org.osgi.security.fing06.test;
 
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Fing06Test {
 
+	@SuppressWarnings("unused")
 	@Test
 	public void testFing06() {
 		
