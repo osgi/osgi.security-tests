@@ -16,12 +16,16 @@ package org.osgi.security.dos032.test;
 
 import static org.junit.Assert.fail;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Dos032Test {
    
 	private final int SIZE = 21000000;
 	
-    @Test
+    @SuppressWarnings("unused")
+	@Test
     public void testDos032() {
     	
     	try {		

@@ -15,9 +15,29 @@
 package org.osgi.security.code01.test;
 
 import static org.junit.Assert.assertEquals;
-import com.sun.jna.Native;
-import org.junit.Test;
 
+import com.sun.jna.Native;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
+
+/**
+ * @author Sogeti High Tech
+ * 
+ * Load of JNA (Java Native Access) related libraries to execute native code 
+ * (programs based on other languages like C, C++, assembler...) from JAVA JVM.
+ * 
+ * This bundle loads Clibrary.java class (extension of Java Library class 
+ * from JNA), which contains C printf function definition. 
+ * 
+ * Then, the malicious bundle will invoke printf function from this class 
+ * and prints a string without using standard System.out.println() JAVA API 
+ * function.
+ * 
+ **/
+
+@RunWith(OSGiSecurityTestRunner.class)
 public class Code01Test {
 	
     @Test

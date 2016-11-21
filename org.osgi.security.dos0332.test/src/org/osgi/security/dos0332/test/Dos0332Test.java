@@ -16,7 +16,10 @@ package org.osgi.security.dos0332.test;
 
 import static org.junit.Assert.fail;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Dos0332Test {
     
     @Test

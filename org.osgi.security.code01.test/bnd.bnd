@@ -30,3 +30,4 @@ Test-Cases: ${test-cases}
 -runproperties: org.osgi.framework.security=osgi
 -runee: JavaSE-1.8
 -runfw: org.eclipse.osgi
+

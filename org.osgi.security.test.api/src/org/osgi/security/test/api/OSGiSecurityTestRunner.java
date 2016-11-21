@@ -25,7 +25,7 @@ import org.osgi.framework.Version;
  * 
  **/
 
-public class OSGiSecurityTestRunner extends BlockJUnit4ClassRunner implements RemoteTestingContstants {
+public class OSGiSecurityTestRunner extends BlockJUnit4ClassRunner implements RemoteTestingConstants {
 	
 	private final BundleContext ctx;
 	

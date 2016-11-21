@@ -17,12 +17,17 @@ package org.osgi.security.data02.test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import java.io.File;
+import java.security.AllPermission;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Data02Test {
 	
 	@Test
@@ -35,6 +40,7 @@ public class Data02Test {
 		BundleContext ctx = bundle.getBundleContext();
 		
 		try {
+			System.getSecurityManager().checkPermission(new AllPermission());
 			assertTrue(INVALID_BUNDLE_PATH + " was not found", new File(INVALID_BUNDLE_PATH).exists());
 			ctx.installBundle(FORMATED_INVALID_BUNDLE_PATH).start();
 		} catch (BundleException e) {

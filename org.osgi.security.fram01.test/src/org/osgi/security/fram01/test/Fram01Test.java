@@ -16,12 +16,16 @@ package org.osgi.security.fram01.test;
 
 import java.io.File;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.security.test.api.OSGiSecurityTestRunner;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+@RunWith(OSGiSecurityTestRunner.class)
 public class Fram01Test {
 	
 	@Test
