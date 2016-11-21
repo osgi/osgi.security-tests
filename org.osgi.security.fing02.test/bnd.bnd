@@ -12,7 +12,7 @@ Test-Cases: ${test-cases}
 -buildpath: \
 	osgi.enroute.base.api;version=1.0,\
 	osgi.enroute.junit.wrapper;version=4.12,\
-
+	org.osgi.security.test.api;version=latest
 -includeresource: {readme.md}
 
 -runrequires: \
